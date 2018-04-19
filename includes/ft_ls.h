@@ -21,11 +21,13 @@
 # include <unistd.h>
 # include "libft.h"
 
-# define FLAG_a 1
-# define FLAG_l 10
-# define FLAG_r 11
-# define FLAG_R 100
-# define FLAG_t 101
+#include <stdio.h>
+
+# define FLAG_a 1	//00000001
+# define FLAG_l 2	//00000010
+# define FLAG_r 4	//00000100
+# define FLAG_R 8	//00001000
+# define FLAG_t 16	//00010000
 
 typedef struct	s_list
 {
@@ -35,8 +37,15 @@ typedef struct	s_list
 	struct	s_list	*sub;
 	struct	s_list	*next;
 	struct	s_list	*prev;
+	int				modtime;
 }				t_list;
 
+typedef struct	s_arg
+{
+	struct	s_list	**files;
+	int				flags;
+	
+}				t_arg;
 
 
 /* 	------------------------- FUNCTIONS I USE IN FT_LS -------------------------
@@ -114,5 +123,28 @@ typedef struct	s_list
 };
 */
 
+/*
+**	ft_ls_list.c
+*/
+t_list	*add_node(t_list *prev, char *name, char *path);
+t_list	*create_list(t_list *curr, char *path, char *name, int flags);
+
+/*
+**	ft_ls_print.c
+*/
+void	print_long(t_list *ptr);
+void	print_path(t_list *all, int flags);
+
+/*
+**	ft_ls_tools.c
+*/
+void	ft_error(int nb, char *name);
+char	*bulid_path(char *s1, char *s2);
+void	parse(int *i, char **av, int *flags);
+
+
+/*
+**	ft_ls_list.c
+*/
 #endif
 

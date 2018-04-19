@@ -16,7 +16,10 @@ FLAGS = -g -Wall -Wextra -Werror
 HEADERS = includes/
 SRCS_DIR = srcs/
 
-SRCS =	$(SRCS_DIR)ft_ls.c	\
+SRCS =	$(SRCS_DIR)ft_ls.c \
+		$(SRCS_DIR)ft_ls_print.c \
+		$(SRCS_DIR)ft_ls_tools.c \
+		$(SRCS_DIR)ft_ls_list.c \
 
 OBJS = $(SRCS:.c=.o)
 LIBFT = libft/libft.a
