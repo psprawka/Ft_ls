@@ -75,8 +75,12 @@ int		main(int ac, char **av)
 		*all = NULL;
 		*all = create_list(*all, ft_strdup(av[i]), NULL, flags);
 		merge_sort(all, flags);
-		args == 1  || *all == NULL ? print_path(*all, flags, av[i])
-			: print_path(*all, flags, NULL);
+		if (flags & FLAG_r)
+			args == 1  || *all == NULL ? print_path_r(*all, flags, av[i])
+				: print_path_r(*all, flags, NULL);
+		else
+			args == 1  || *all == NULL ? print_path(*all, flags, av[i])
+				: print_path(*all, flags, NULL);
 		if (*all != NULL)
 			free(*all);
 		i++;

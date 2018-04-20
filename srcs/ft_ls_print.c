@@ -18,11 +18,42 @@ void	print_long(t_list *ptr)
 	
 }
 
+
+void	print_path_r(t_list *all, int flags, char *path)
+{
+	t_list	*ptr;
+	
+	ptr = all;
+	if (path == NULL || !ptr || (ptr && ft_strcmp(ptr->path, path)))
+		!ptr ? ft_printf("%s:\n", path) : ft_printf("%s:\n", ptr->path);
+	
+	while (ptr && ptr->next)
+		ptr = ptr->next;
+	while (ptr && ptr->prev != NULL)
+	{
+		if (!(flags & FLAG_l))
+			ft_printf("%s\n", ptr->name);
+		else
+			print_long(ptr);
+		ptr = ptr->prev;
+	}
+	ptr ? ft_printf("%s\n", ptr->name) : ft_printf("");
+	ptr = all;
+	while (ptr && ptr->next)
+		ptr = ptr->next;
+	while (flags & FLAG_R && ptr != NULL)
+	{
+		if (ptr->sub != NULL && ft_printf("\n"))
+			print_path(ptr->sub, flags, path);
+		ptr = ptr->prev;
+	}
+}
+
+
 void	print_path(t_list *all, int flags, char *path)
 {
 	t_list	*ptr;
-	char 	*color;
-	
+
 	ptr = all;
 	if (path == NULL || !ptr || (ptr && ft_strcmp(ptr->path, path)))
 		!ptr ? ft_printf("%s:\n", path) : ft_printf("%s:\n", ptr->path);
@@ -38,11 +69,8 @@ void	print_path(t_list *all, int flags, char *path)
 	ptr = all;
 	while (flags & FLAG_R && ptr != NULL)
 	{
-		if (ptr->sub != NULL)
-		{
-			ft_printf("\n");
+		if (ptr->sub != NULL && ft_printf("\n"))
 			print_path(ptr->sub, flags, path);
-		}
 		ptr = ptr->next;
 	}
 }

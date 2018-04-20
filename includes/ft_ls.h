@@ -133,6 +133,7 @@ t_list	*create_list(t_list *curr, char *path, char *name, int flags);
 */
 void	print_long(t_list *ptr);
 void	print_path(t_list *all, int flags, char *path);
+void	print_path_r(t_list *all, int flags, char *path);
 
 /*
 **	ft_ls_tools.c
