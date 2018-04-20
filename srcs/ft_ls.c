@@ -62,24 +62,29 @@ int		main(int ac, char **av)
 	t_list		**all;
 	int			i;
 	int			flags;
+	int			args;
 	
 	i = 1;
 	flags = 0;
 	all = (t_list **)malloc(sizeof(t_list *));
-	
 	if (ac > 1)
 		parse(&i, av, &flags);
+	args = ac - i;
 	while (i < ac)
 	{
 		*all = NULL;
 		*all = create_list(*all, ft_strdup(av[i]), NULL, flags);
-		print_path(*all, flags);
+		merge_sort(all, flags);
+		args == 1  || *all == NULL ? print_path(*all, flags, av[i])
+			: print_path(*all, flags, NULL);
 		if (*all != NULL)
 			free(*all);
 		i++;
+		if (i < ac)
+			ft_printf("\n");
 	}
 
-	return 0;
+	return (0);
 }
 
 

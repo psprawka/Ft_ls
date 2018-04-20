@@ -15,7 +15,7 @@
 void	ft_error(int nb, char *name)
 {
 	if (nb == 1)
-		ft_printf("ft_ls: %s: No such file or directory", name);
+		ft_printf("ft_ls: %s: No such file or directory\n", name);
 	if (nb == 2)
 	{
 		ft_printf("ft_ls: illegal option -- %c\n", name[0]);

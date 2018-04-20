@@ -18,27 +18,31 @@ void	print_long(t_list *ptr)
 	
 }
 
-void	print_path(t_list *all, int flags)
+void	print_path(t_list *all, int flags, char *path)
 {
 	t_list	*ptr;
-	char *color;
+	char 	*color;
 	
 	ptr = all;
-	ft_printf("%s:\n", ptr->path);
-	while (ptr->next != NULL)
+	if (path == NULL || !ptr || (ptr && ft_strcmp(ptr->path, path)))
+		!ptr ? ft_printf("%s:\n", path) : ft_printf("%s:\n", ptr->path);
+	while (ptr && ptr->next != NULL)
 	{
 		if (!(flags & FLAG_l))
-			ft_printf("[%s] -> ", ptr->name);
+			ft_printf("%s\n", ptr->name);
 		else
 			print_long(ptr);
 		ptr = ptr->next;
 	}
-	ft_printf("[%s] -> NULL\n", ptr->name);
+	ptr ? ft_printf("%s\n", ptr->name) : ft_printf("");
 	ptr = all;
 	while (flags & FLAG_R && ptr != NULL)
 	{
 		if (ptr->sub != NULL)
-			print_path(ptr->sub, flags);
+		{
+			ft_printf("\n");
+			print_path(ptr->sub, flags, path);
+		}
 		ptr = ptr->next;
 	}
 }

@@ -33,11 +33,10 @@ typedef struct	s_list
 {
 	char			*path;
 	char			*name;
-	struct stat		info;
-	struct	s_list	*sub;
-	struct	s_list	*next;
-	struct	s_list	*prev;
-	int				modtime;
+	struct stat		*info;
+	struct s_list	*sub;
+	struct s_list	*next;
+	struct s_list	*prev;
 }				t_list;
 
 typedef struct	s_arg
@@ -133,7 +132,7 @@ t_list	*create_list(t_list *curr, char *path, char *name, int flags);
 **	ft_ls_print.c
 */
 void	print_long(t_list *ptr);
-void	print_path(t_list *all, int flags);
+void	print_path(t_list *all, int flags, char *path);
 
 /*
 **	ft_ls_tools.c
@@ -142,9 +141,14 @@ void	ft_error(int nb, char *name);
 char	*bulid_path(char *s1, char *s2);
 void	parse(int *i, char **av, int *flags);
 
-
 /*
-**	ft_ls_list.c
+**	ft_ls_sort.c
 */
+int		sort_time(t_list *a, t_list *b);
+void	split_list(t_list *head, t_list **front, t_list **end);
+t_list	*sorted_merge(t_list *a, t_list *b, int flags);
+void	merge_sort(t_list **head, int flags);
+
+
 #endif
 

@@ -20,6 +20,7 @@ SRCS =	$(SRCS_DIR)ft_ls.c \
 		$(SRCS_DIR)ft_ls_print.c \
 		$(SRCS_DIR)ft_ls_tools.c \
 		$(SRCS_DIR)ft_ls_list.c \
+		$(SRCS_DIR)ft_ls_sort.c \
 
 OBJS = $(SRCS:.c=.o)
 LIBFT = libft/libft.a
