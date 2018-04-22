@@ -15,7 +15,7 @@
 void	print_long(t_list *ptr)
 {
 	
-	
+	printf("hi\n");
 }
 
 
@@ -24,27 +24,38 @@ void	print_path_r(t_list *all, int flags, char *path)
 	t_list	*ptr;
 	
 	ptr = all;
+//	printf("path: [%s] %p\n", path, ptr);
+	t_list *bs;
+	
+	bs = all;
+	
+	while (bs && bs->next)
+	{
+		printf("BS [%s]\n", bs->path);
+		bs = bs->next;
+	}
 	if (path == NULL || !ptr || (ptr && ft_strcmp(ptr->path, path)))
 		!ptr ? ft_printf("%s:\n", path) : ft_printf("%s:\n", ptr->path);
 	
 	while (ptr && ptr->next)
+	{
+		
 		ptr = ptr->next;
+	}
 	while (ptr && ptr->prev != NULL)
 	{
-		if (!(flags & FLAG_l))
-			ft_printf("%s\n", ptr->name);
-		else
-			print_long(ptr);
+		!(flags & FLAG_l) ? ft_printf("%s\n", ptr->name) : print_long(ptr);
 		ptr = ptr->prev;
 	}
 	ptr ? ft_printf("%s\n", ptr->name) : ft_printf("");
 	ptr = all;
 	while (ptr && ptr->next)
 		ptr = ptr->next;
+	
 	while (flags & FLAG_R && ptr != NULL)
 	{
 		if (ptr->sub != NULL && ft_printf("\n"))
-			print_path(ptr->sub, flags, path);
+			print_path_r(ptr->sub, flags, path);
 		ptr = ptr->prev;
 	}
 }
@@ -59,10 +70,7 @@ void	print_path(t_list *all, int flags, char *path)
 		!ptr ? ft_printf("%s:\n", path) : ft_printf("%s:\n", ptr->path);
 	while (ptr && ptr->next != NULL)
 	{
-		if (!(flags & FLAG_l))
-			ft_printf("%s\n", ptr->name);
-		else
-			print_long(ptr);
+		!(flags & FLAG_l) ? ft_printf("%s\n", ptr->name) : print_long(ptr);
 		ptr = ptr->next;
 	}
 	ptr ? ft_printf("%s\n", ptr->name) : ft_printf("");

@@ -19,6 +19,7 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <unistd.h>
+# include <time.h>
 # include "libft.h"
 
 #include <stdio.h>
@@ -29,11 +30,15 @@
 # define FLAG_R 8	//00001000
 # define FLAG_t 16	//00010000
 
+# define FLAGS	all->flags
+# define FILES	all->all
+
 typedef struct	s_list
 {
 	char			*path;
 	char			*name;
 	struct stat		*info;
+	struct timespec	time;
 	struct s_list	*sub;
 	struct s_list	*next;
 	struct s_list	*prev;
@@ -41,8 +46,10 @@ typedef struct	s_list
 
 typedef struct	s_arg
 {
-	struct	s_list	**files;
+	struct	s_list	**all;
 	int				flags;
+	char			*path;
+	int				args;
 	
 }				t_arg;
 

@@ -37,7 +37,7 @@ t_list	*create_list(t_list *curr, char *path, char *name, int flags)
 	DIR 			*directory;
 	struct dirent	*file;
 	struct stat		*info;
-	
+
 	if ((directory = opendir(path)) == NULL)
 		ft_error(1, path);
 	while ((file = readdir(directory)) != NULL)
@@ -48,8 +48,9 @@ t_list	*create_list(t_list *curr, char *path, char *name, int flags)
 		name = bulid_path(ft_strdup(path), file->d_name);
 		curr = add_node(curr, file->d_name, path);
 		lstat(name, info);
-		curr->info = (flags & FLAG_t || flags & FLAG_l) ? info : NULL;
-		if (ft_strcmp(file->d_name, "..") && ft_strcmp(file->d_name, ".")
+		curr->info = info;
+		curr->time = info->st_mtimespec;
+		if (ft_strncmp(file->d_name, ".", 1)
 			&& S_ISDIR(info->st_mode) && flags & FLAG_R)
 			curr->sub = create_list(curr->sub, name, NULL, flags);
 		else

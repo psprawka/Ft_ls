@@ -35,54 +35,45 @@
 //}
 
 
+/* 	In fuction "ls" first I create a linked list with files and adn directories
+**	belonging to "char *path" path. Afterwards I sort list based on flags
+**	given in arguments, then print list either recursively or as it goes
+**	and free list in order to avoid memory leaks.
+*/
 
-char	*convert_binary(unsigned long int nb)
+void	ls(t_arg *all, char *path)
 {
-	char	*print;
-	int		i;
+	*FILES = NULL;
+	*FILES = create_list(*FILES, ft_strdup(path), NULL, FLAGS);
+	merge_sort(FILES, FLAGS);
+	if (FLAGS & FLAG_r)
+		all->args == 1  || *FILES == NULL ? print_path_r(*FILES, FLAGS, path)
+			: print_path_r(*FILES, FLAGS, NULL);
+	else
+		all->args == 1  || *FILES == NULL ? print_path(*FILES, FLAGS, path)
+			: print_path(*FILES, FLAGS, NULL);
+	if (*FILES != NULL)
+		free(*FILES);
 	
-	i = 0;
-	print = ft_memalloc(33);
-	if (nb == 0)
-		print[i] = '0';
-	while (nb != 0)
-	{
-		print[i++] = (nb % 2) + 48;
-		nb /= 2;
-	}
-	return (ft_strrev(print));
 }
-
-
-
 
 
 int		main(int ac, char **av)
 {
 	t_list		**all;
+	t_arg		*hi;
 	int			i;
-	int			flags;
-	int			args;
 	
 	i = 1;
-	flags = 0;
-	all = (t_list **)malloc(sizeof(t_list *));
+	hi = (t_arg *)malloc(sizeof(t_arg));
+	hi->all = (t_list **)malloc(sizeof(t_list *));
+	hi->flags = 0;
 	if (ac > 1)
-		parse(&i, av, &flags);
-	args = ac - i;
+		parse(&i, av, &hi->flags);
+	hi->args = ac - i;
 	while (i < ac)
 	{
-		*all = NULL;
-		*all = create_list(*all, ft_strdup(av[i]), NULL, flags);
-		merge_sort(all, flags);
-		if (flags & FLAG_r)
-			args == 1  || *all == NULL ? print_path_r(*all, flags, av[i])
-				: print_path_r(*all, flags, NULL);
-		else
-			args == 1  || *all == NULL ? print_path(*all, flags, av[i])
-				: print_path(*all, flags, NULL);
-		if (*all != NULL)
-			free(*all);
+		ls(hi, av[i]);
 		i++;
 		if (i < ac)
 			ft_printf("\n");

@@ -10,14 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
-
-
-
-
-
-
 #include "ft_ls.h"
 
 /*	ft_strcmp function compares two strings based on ascii order, therefore:
@@ -25,7 +17,7 @@
 **		-> if s1 < s2 in ascii returned number will be posotive,
  **		-> if s1 == s2 (strings have the same length), function wil return 0;
 */
-#include <time.h>
+
 int		ftt_strcmp(char *s1, char *s2)
 {
 	int		i;
@@ -44,14 +36,22 @@ int		ftt_strcmp(char *s1, char *s2)
 	return (0);
 }
 
-
-int		sort_time(t_list *a, t_list *b)
+int			sort_time(t_list *a, t_list *b)
 {
-	int		res;
+	long diff;
+	long ndiff;
 
-	res = a->info->st_atime >= b->info->st_atime ? 1 : 0;
-	return (res);
+	diff = a->time.tv_sec -b->time.tv_sec;
+	if (!diff)
+	{
+		ndiff = a->time.tv_nsec - b->time.tv_nsec;
+		if (!ndiff)
+			return (1);
+		return (ndiff >= 0 ? 1: 0);
+	}
+	return (diff >= 0 ? 1 : 0);
 }
+
 
 void	split_list(t_list *head, t_list **front, t_list **end)
 {
@@ -96,6 +96,8 @@ t_list	*sorted_merge(t_list *a, t_list *b, int flags)
 		res = b;
 		res->next = sorted_merge(a, b->next, flags);
 	}
+	res->next->prev = res;
+	res->prev = NULL;
 	return (res);
 }
 
