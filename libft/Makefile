@@ -28,6 +28,7 @@ SRC = $(SRC_DIR)ft_atoi.c \
 	$(SRC_DIR)ft_itoa.c \
 	$(SRC_DIR)ft_memalloc.c \
 	$(SRC_DIR)ft_memset.c \
+	$(SRC_DIR)ft_strncat.c \
 	$(SRC_DIR)ft_strcmp.c \
 	$(SRC_DIR)ft_strdup.c \
 	$(SRC_DIR)ft_strjoin.c \

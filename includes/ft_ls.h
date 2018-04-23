@@ -20,7 +20,11 @@
 # include <sys/stat.h>
 # include <unistd.h>
 # include <time.h>
+# include <pwd.h>
+# include <grp.h>
 # include "libft.h"
+# include <sys/xattr.h>
+
 
 #include <stdio.h>
 
@@ -32,6 +36,7 @@
 
 # define FLAGS	all->flags
 # define FILES	all->all
+# define INFO	ptr->info
 
 typedef struct	s_list
 {

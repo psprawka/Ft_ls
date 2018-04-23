@@ -43,6 +43,7 @@ int				ft_strcmp(char *s1, char *s2);
 int				ft_strlen_chr(char *str, char c);
 char			*ft_strncpy(char *str, int size);
 int				ft_strstr(char *str, char *to_find);
+char			*ft_strncat(char *dest, char *src, size_t nb);
 
 int				ft_wstrlen(wchar_t *ws);
 char			*ft_strrev(char *str);

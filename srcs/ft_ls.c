@@ -71,6 +71,11 @@ int		main(int ac, char **av)
 	if (ac > 1)
 		parse(&i, av, &hi->flags);
 	hi->args = ac - i;
+	if (i == ac)
+	{
+		hi->args = 1;
+		ls (hi, ".");
+	}
 	while (i < ac)
 	{
 		ls(hi, av[i]);

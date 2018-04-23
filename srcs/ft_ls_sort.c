@@ -41,7 +41,7 @@ int			sort_time(t_list *a, t_list *b)
 	long diff;
 	long ndiff;
 
-	diff = a->time.tv_sec -b->time.tv_sec;
+	diff = a->time.tv_sec - b->time.tv_sec;
 	if (!diff)
 	{
 		ndiff = a->time.tv_nsec - b->time.tv_nsec;
@@ -115,6 +115,7 @@ void	merge_sort(t_list **head, int flags)
 	merge_sort(&b, flags);
 	*head = sorted_merge(a, b, flags);
 	
+	ptr = *head;
 	while (flags & FLAG_R && ptr != NULL)
 	{
 		if (ptr->sub != NULL)
@@ -122,3 +123,4 @@ void	merge_sort(t_list **head, int flags)
 		ptr = ptr->next;
 	}
 }
+
