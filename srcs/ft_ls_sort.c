@@ -14,7 +14,7 @@
 
 /*	ft_strcmp function compares two strings based on ascii order, therefore:
 **		-> if s1 > s2 in ascii returned number will be negative,
-**		-> if s1 < s2 in ascii returned number will be posotive,
+**		-> if s1 < s2 in ascii returned number will be positive,
  **		-> if s1 == s2 (strings have the same length), function wil return 0;
 */
 
@@ -46,7 +46,7 @@ int			sort_time(t_list *a, t_list *b)
 	{
 		ndiff = a->time.tv_nsec - b->time.tv_nsec;
 		if (!ndiff)
-			return (1);
+			return (ftt_strcmp(a->name, b->name));
 		return (ndiff >= 0 ? 1: 0);
 	}
 	return (diff >= 0 ? 1 : 0);

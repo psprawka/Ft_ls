@@ -50,6 +50,31 @@ char	filetype(t_list *ptr)
 	return ('\0');
 }
 
+int		get_total(t_list *head, int size, int *spaces)
+{
+	t_list *ptr;
+	int i;
+	
+	i = 1;
+	*spaces = 0;
+	ptr = head;
+	if (ptr == NULL)
+		return (size);
+	*spaces = ptr->info->st_size;
+	while (ptr)
+	{
+		size += ptr->info->st_blocks;
+		if (*spaces < ptr->info->st_size)
+			*spaces = ptr->info->st_size;
+		ptr = ptr->next;
+	}
+	while (*spaces != 0 && i++)
+	{
+		*spaces /= 10;
+	}
+	*spaces = i < 2 ? 2 : i;
+	return (size);
+}
 
 char	*get_time(t_list *ptr)
 {
@@ -62,87 +87,85 @@ char	*get_time(t_list *ptr)
 	return (res);
 }
 
-void	print_long(t_list *ptr)
+void	print_long(t_list *ptr, int spaces)
 {
-	char			*perm;
-	char			*time;
+	char			*tmp;
 	struct group	*grp;
 	struct passwd	*pwd;
-	char			buf[1024];
 	
-	perm = get_permission(ptr);
-	time = get_time(ptr);
 	grp = getgrgid(INFO->st_gid);
 	pwd = getpwuid(INFO->st_uid);
-	ft_printf("%c%s", filetype(ptr), perm);
-	listxattr(bulid_path(ptr->path, ptr->name), buf, 1024, XATTR_NOFOLLOW) ?
+	tmp = get_permission(ptr);
+	ft_printf("%c%s", filetype(ptr), tmp);
+//	free(tmp);
+	
+	tmp = ft_strnew(1024);
+	listxattr(bulid_path(ptr->path, ptr->name), tmp, 1024, XATTR_NOFOLLOW) ?
 		ft_printf("@") : ft_printf(" ");
+//	free(tmp);
 	
-	
-	ft_printf(" %d %s  %s  %lld %s %s\n", INFO->st_nlink, pwd->pw_name, grp->gr_name, INFO->st_size, time, ptr->name);
-//	free(time);
-//	free(perm);
+	tmp = get_time(ptr);
+	ft_printf(" %d %s  %s %*lld %s %s\n", INFO->st_nlink, pwd->pw_name, grp->gr_name, spaces, INFO->st_size, tmp, ptr->name);
+//	free(tmp);
 }
 
 
 void	print_path_r(t_list *all, int flags, char *path)
 {
 	t_list	*ptr;
+	int 	spaces;
 	
 	ptr = all;
 	if (path == NULL || !ptr || (ptr && ft_strcmp(ptr->path, path)))
 		!ptr ? ft_printf("%s:\n", path) : ft_printf("%s:\n", ptr->path);
+	if (flags & FLAG_l && ptr)
+		ft_printf("total %d\n", get_total(ptr, 0, &spaces));
 	while (ptr && ptr->next)
 		ptr = ptr->next;
 	while (ptr && ptr->prev != NULL)
 	{
-		!(flags & FLAG_l) ? ft_printf("%s\n", ptr->name) : print_long(ptr);
+		!(flags & FLAG_l) ? ft_printf("%s\n", ptr->name) : print_long(ptr, spaces);
 		ptr = ptr->prev;
 	}
 	if (ptr)
-		!(flags & FLAG_l) ? ft_printf("%s\n", ptr->name) : print_long(ptr);
+		!(flags & FLAG_l) ? ft_printf("%s\n", ptr->name) : print_long(ptr, spaces);
 	ptr = all;
 	while (ptr && ptr->next)
 		ptr = ptr->next;
 	while (flags & FLAG_R && ptr != NULL)
 	{
 
-		if (S_ISDIR(ptr->info->st_mode) && ft_printf("\n"))
+		if (S_ISDIR(ptr->info->st_mode) && ft_strncmp(ptr->name, ".", 1) && ft_printf("\n"))
 			ptr->sub ? print_path_r(ptr->sub, flags, path) :
 			print_path_r(ptr->sub, flags, bulid_path(ptr->path, ptr->name));
 		ptr = ptr->prev;
 	}
 }
 
-int		get_total(char *path)
-{
-	struct stat info;
-	printf("path %s\n", path);
-	stat(path, &info);
-	return (info.st_blocks);
-}
+
 
 
 void	print_path(t_list *all, int flags, char *path)
 {
 	t_list	*ptr;
+	int		spaces;
 
 	ptr = all;
 	if (path == NULL || !ptr || (ptr && ft_strcmp(ptr->path, path)))
 		!ptr ? ft_printf("%s:\n", path) : ft_printf("%s:\n", ptr->path);
-	if (flags & FLAG_l)
-		ft_printf("total %d\n", get_total(path));
+	if (flags & FLAG_l && ptr)
+		ft_printf("total %d\n", get_total(ptr, 0, &spaces));
 	while (ptr && ptr->next != NULL)
 	{
-		!(flags & FLAG_l) ? ft_printf("%s\n", ptr->name) : print_long(ptr);
+		!(flags & FLAG_l) ? ft_printf("%s\n", ptr->name) : print_long(ptr, spaces);
 		ptr = ptr->next;
 	}
 	if (ptr)
-		!(flags & FLAG_l) ? ft_printf("%s\n", ptr->name) : print_long(ptr);
+		!(flags & FLAG_l) ? ft_printf("%s\n", ptr->name) : print_long(ptr, spaces);
 	ptr = all;
 	while (flags & FLAG_R && ptr != NULL)
 	{
-		if (S_ISDIR(ptr->info->st_mode) && ft_printf("\n"))
+		if (S_ISDIR(ptr->info->st_mode) && ft_strncmp(ptr->name, ".", 1) && ft_printf("\n"))
 			ptr->sub ? print_path(ptr->sub, flags, path) :
 			print_path(ptr->sub, flags, bulid_path(ptr->path, ptr->name));
 		ptr = ptr->next;

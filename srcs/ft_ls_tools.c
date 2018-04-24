@@ -42,7 +42,7 @@ char	*bulid_path(char *s1, char *s2)
 	while (s2[j])
 		path[i++] = s2[j++];
 	path[i] = '\0';
-	free(s1);
+//	free(s1);
 	return (path);
 }
 
