@@ -49,7 +49,6 @@ char	*bulid_path(char *s1, char *s2)
 void	parse(int *i, char **av, int *flags)
 {
 	int		j;
-	
 	while (av[*i] && av[*i][0] == '-')
 	{
 		j = 1;
@@ -57,7 +56,7 @@ void	parse(int *i, char **av, int *flags)
 		{
 			if (av[*i][j] == 'a')
 				*flags |= FLAG_a;
-			else if (av[*i][j] == 'l')
+			else if (av[*i][j] == 'l' && printf("hereeee\n"))
 				*flags |= FLAG_l;
 			else if (av[*i][j] == 'r')
 				*flags |= FLAG_r;
@@ -65,6 +64,12 @@ void	parse(int *i, char **av, int *flags)
 				*flags |= FLAG_R;
 			else if (av[*i][j] == 't')
 				*flags |= FLAG_t;
+			else if (av[*i][j] == 'G')
+				*flags |= FLAG_G;
+			else if (av[*i][j] == 'i')
+				*flags |= FLAG_i;
+			else if (av[*i][j] == 'A')
+				*flags |= FLAG_A;
 			else
 				ft_error(2, &(av[*i][j]));
 			j++;

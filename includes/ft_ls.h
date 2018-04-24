@@ -33,9 +33,13 @@
 # define FLAG_r 4	//00000100
 # define FLAG_R 8	//00001000
 # define FLAG_t 16	//00010000
+# define FLAG_A 32	//00100000
+# define FLAG_i 64	//01000000
+# define FLAG_G 128	//10000000
 
 # define FLAGS	all->flags
 # define FILES	all->all
+
 # define INFO	ptr->info
 
 typedef struct	s_list
@@ -54,7 +58,8 @@ typedef struct	s_arg
 	struct	s_list	**all;
 	int				flags;
 	char			*path;
-	int				args;
+	t_list			*args;
+	int				nb_args;
 	
 }				t_arg;
 

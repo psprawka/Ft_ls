@@ -25,8 +25,8 @@ int		ftt_strcmp(char *s1, char *s2)
 	i = 0;
 	while (s1[i] || s2[i])
 	{
-		if ((s1[i] < s2[i]) || (s1[i] > s2[i]))
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
 		i++;
 	}
 	if (!s1[i] && s2[i])
@@ -46,7 +46,7 @@ int			sort_time(t_list *a, t_list *b)
 	{
 		ndiff = a->time.tv_nsec - b->time.tv_nsec;
 		if (!ndiff)
-			return (ftt_strcmp(a->name, b->name));
+			return (ft_strcmp(a->name, b->name) <= 0 ? 1 : 0);
 		return (ndiff >= 0 ? 1: 0);
 	}
 	return (diff >= 0 ? 1 : 0);
@@ -84,7 +84,7 @@ t_list	*sorted_merge(t_list *a, t_list *b, int flags)
 		return (b);
 	if (b == NULL)
 		return (a);
-	
+
 	if ((flags & FLAG_t && sort_time(a, b))
 		|| (!(flags & FLAG_t) && ftt_strcmp(a->name, b->name) <= 0))
 	{

@@ -124,11 +124,15 @@ void	print_path_r(t_list *all, int flags, char *path)
 		ptr = ptr->next;
 	while (ptr && ptr->prev != NULL)
 	{
+		flags & FLAG_i ? ft_printf("%d ", ptr->info->st_ino) : spaces;
 		!(flags & FLAG_l) ? ft_printf("%s\n", ptr->name) : print_long(ptr, spaces);
 		ptr = ptr->prev;
 	}
 	if (ptr)
+	{
+		flags & FLAG_i ? ft_printf("%d ", ptr->info->st_ino) : spaces;
 		!(flags & FLAG_l) ? ft_printf("%s\n", ptr->name) : print_long(ptr, spaces);
+	}
 	ptr = all;
 	while (ptr && ptr->next)
 		ptr = ptr->next;
@@ -142,9 +146,6 @@ void	print_path_r(t_list *all, int flags, char *path)
 	}
 }
 
-
-
-
 void	print_path(t_list *all, int flags, char *path)
 {
 	t_list	*ptr;
@@ -157,11 +158,15 @@ void	print_path(t_list *all, int flags, char *path)
 		ft_printf("total %d\n", get_total(ptr, 0, &spaces));
 	while (ptr && ptr->next != NULL)
 	{
+		flags & FLAG_i ? ft_printf("%d ", ptr->info->st_ino) : spaces;
 		!(flags & FLAG_l) ? ft_printf("%s\n", ptr->name) : print_long(ptr, spaces);
 		ptr = ptr->next;
 	}
 	if (ptr)
+	{
+		flags & FLAG_i ? ft_printf("%d ", ptr->info->st_ino) : spaces;
 		!(flags & FLAG_l) ? ft_printf("%s\n", ptr->name) : print_long(ptr, spaces);
+	}
 	ptr = all;
 	while (flags & FLAG_R && ptr != NULL)
 	{

@@ -41,22 +41,46 @@
 **	and free list in order to avoid memory leaks.
 */
 
-void	ls(t_arg *all, char *path)
+void	ft_ls(t_arg *all, char *path)
 {
 	*FILES = NULL;
 	*FILES = create_list(*FILES, ft_strdup(path), NULL, FLAGS);
 	merge_sort(FILES, FLAGS);
 	if (FLAGS & FLAG_r)
-		all->args == 1  || *FILES == NULL ? print_path_r(*FILES, FLAGS, path)
+		all->nb_args == 1 || *FILES == NULL ? print_path_r(*FILES, FLAGS, path)
 			: print_path_r(*FILES, FLAGS, NULL);
 	else
-		all->args == 1  || *FILES == NULL ? print_path(*FILES, FLAGS, path)
+		all->nb_args == 1 || *FILES == NULL ? print_path(*FILES, FLAGS, path)
 			: print_path(*FILES, FLAGS, NULL);
 	if (*FILES != NULL)
 		free(*FILES);
-	
 }
 
+void	init_arg(t_arg **hi)
+{
+	*hi = (t_arg *)malloc(sizeof(t_arg));
+	(*hi)->all = (t_list **)malloc(sizeof(t_list *));
+	(*hi)->args = (t_list *)malloc(sizeof(t_list));
+	(*hi)->flags = 0;
+}
+
+
+void	sort_args(t_arg *hi, char **av, int ac, int i)
+{
+	t_list	*curr;
+
+	curr = NULL;
+	while (i < ac)
+	{
+		curr = add_node(curr, av[i], av[i]);
+		i++;
+	}
+	
+	while (curr->prev)
+		curr = curr->prev;
+	merge_sort(&curr, hi->flags);
+	hi->args = curr;
+}
 
 int		main(int ac, char **av)
 {
@@ -65,25 +89,20 @@ int		main(int ac, char **av)
 	int			i;
 	
 	i = 1;
-	hi = (t_arg *)malloc(sizeof(t_arg));
-	hi->all = (t_list **)malloc(sizeof(t_list *));
-	hi->flags = 0;
+	init_arg(&hi);
 	if (ac > 1)
 		parse(&i, av, &hi->flags);
-	hi->args = ac - i;
+	sort_args(hi, av, ac, i);
+	hi->nb_args = (ac - i > 0) ? ac - i : 1;
 	if (i == ac)
-	{
-		hi->args = 1;
-		ls (hi, ".");
-	}
+		ft_ls(hi, ".");
 	while (i < ac)
 	{
-		ls(hi, av[i]);
-		i++;
-		if (i < ac)
+		ft_ls(hi, hi->args->name);
+		if (++i < ac)
 			ft_printf("\n");
+		hi->args = hi->args->next;
 	}
-
 	return (0);
 }
 
