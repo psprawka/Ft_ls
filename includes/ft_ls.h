@@ -142,13 +142,15 @@ typedef struct	s_arg
 /*
 **	ft_ls_list.c
 */
+t_list	*delete_node(t_list *curr);
 t_list	*add_node(t_list *prev, char *name, char *path);
 t_list	*create_list(t_list *curr, char *path, char *name, int flags);
+
 
 /*
 **	ft_ls_print.c
 */
-void	print_long(t_list *ptr, int spaces);
+void	print_files(t_arg *all);
 void	print_path(t_list *all, int flags, char *path);
 void	print_path_r(t_list *all, int flags, char *path);
 
@@ -157,6 +159,7 @@ void	print_path_r(t_list *all, int flags, char *path);
 */
 void	ft_error(int nb, char *name);
 char	*bulid_path(char *s1, char *s2);
+void	sort_args(t_arg *hi, char **av, int ac, int i);
 void	parse(int *i, char **av, int *flags);
 
 /*
@@ -167,6 +170,19 @@ void	split_list(t_list *head, t_list **front, t_list **end);
 t_list	*sorted_merge(t_list *a, t_list *b, int flags);
 void	merge_sort(t_list **head, int flags);
 
+/*
+ **	ft_ls_print_long.c
+ */
+char	*get_permission(t_list *ptr);
+char	filetype(t_list *ptr);
+char	*get_time(t_list *ptr);
+int		get_total(t_list *head, int size, int *spaces);
+void	print_long(t_list *ptr, int spaces);
+
+/*
+ **	ft_ls_help.c
+ */
+void	file_exists(char *path);
 
 #endif
 

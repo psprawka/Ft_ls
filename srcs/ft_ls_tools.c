@@ -46,6 +46,26 @@ char	*bulid_path(char *s1, char *s2)
 	return (path);
 }
 
+void	sort_args(t_arg *hi, char **av, int ac, int i)
+{
+	t_list		*curr;
+	struct stat	*info;
+	
+	curr = NULL;
+	while (i < ac)
+	{
+		info = (struct stat *)malloc(sizeof(struct stat));
+		curr = add_node(curr, ft_strdup(av[i]), ft_strdup(av[i]));
+		lstat(av[i], info);
+		curr->info = info;
+		i++;
+	}
+	while (curr && curr->prev)
+		curr = curr->prev;
+	merge_sort(&curr, hi->flags);
+	hi->args = curr;
+}
+
 void	parse(int *i, char **av, int *flags)
 {
 	int		j;
@@ -56,7 +76,7 @@ void	parse(int *i, char **av, int *flags)
 		{
 			if (av[*i][j] == 'a')
 				*flags |= FLAG_a;
-			else if (av[*i][j] == 'l' && printf("hereeee\n"))
+			else if (av[*i][j] == 'l')
 				*flags |= FLAG_l;
 			else if (av[*i][j] == 'r')
 				*flags |= FLAG_r;

@@ -12,6 +12,24 @@
 
 #include "ft_ls.h"
 
+t_list	*delete_node(t_list *curr)
+{
+	t_list *prev;
+	t_list *next;
+	
+	prev = curr->prev;
+	next = curr->next;
+	if (prev)
+		prev->next = next;
+	if (next)
+		next->prev = prev;
+	free(curr->path);
+	free(curr->name);
+	free(curr->info);
+	free(curr);
+	return (next);
+}
+
 t_list	*add_node(t_list *prev, char *name, char *path)
 {
 	t_list	*new;
@@ -32,14 +50,19 @@ t_list	*add_node(t_list *prev, char *name, char *path)
 	return (new);
 }
 
+
+
+
 t_list	*create_list(t_list *curr, char *path, char *name, int flags)
 {
 	DIR 			*directory;
 	struct dirent	*file;
 	struct stat		*info;
 
+	file_exists(path);
 	if ((directory = opendir(path)) == NULL)
-		ft_error(1, path);
+		return (NULL);
+		
 	while ((file = readdir(directory)) != NULL)
 	{
 		info = (struct stat *)malloc(sizeof(struct stat));

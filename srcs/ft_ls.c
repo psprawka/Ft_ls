@@ -64,24 +64,6 @@ void	init_arg(t_arg **hi)
 	(*hi)->flags = 0;
 }
 
-
-void	sort_args(t_arg *hi, char **av, int ac, int i)
-{
-	t_list	*curr;
-
-	curr = NULL;
-	while (i < ac)
-	{
-		curr = add_node(curr, av[i], av[i]);
-		i++;
-	}
-	
-	while (curr->prev)
-		curr = curr->prev;
-	merge_sort(&curr, hi->flags);
-	hi->args = curr;
-}
-
 int		main(int ac, char **av)
 {
 	t_list		**all;
@@ -93,13 +75,15 @@ int		main(int ac, char **av)
 	if (ac > 1)
 		parse(&i, av, &hi->flags);
 	sort_args(hi, av, ac, i);
+	print_files(hi);
 	hi->nb_args = (ac - i > 0) ? ac - i : 1;
+	
 	if (i == ac)
 		ft_ls(hi, ".");
-	while (i < ac)
+	while (hi->args)
 	{
 		ft_ls(hi, hi->args->name);
-		if (++i < ac)
+		if (hi->args->next)
 			ft_printf("\n");
 		hi->args = hi->args->next;
 	}
