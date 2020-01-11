@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/24 19:32:01 by psprawka          #+#    #+#             */
-/*   Updated: 2018/04/24 19:32:04 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/01/11 01:21:00 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,7 @@ int		get_total(t_list *head, int size, int *spaces)
 		ptr = ptr->next;
 	}
 	while (*spaces != 0 && i++)
-	{
 		*spaces /= 10;
-	}
 	*spaces = i < 2 ? 2 : i;
 	return (size);
 }

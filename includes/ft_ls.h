@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/29 13:37:13 by psprawka          #+#    #+#             */
-/*   Updated: 2017/12/29 13:37:17 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/01/11 02:08:58 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,18 @@
 
 # define INFO	ptr->info
 
-typedef struct	s_list
+typedef struct	s_data
 {
 	char			*path;
 	char			*name;
 	struct stat		*info;
 	struct timespec	time;
 	struct s_list	*sub;
-	struct s_list	*next;
-	struct s_list	*prev;
-}				t_list;
+}				t_data;
 
 typedef struct	s_arg
 {
-	struct	s_list	**all;
+	t_list			*file_context;
 	int				flags;
 	char			*path;
 	t_list			*args;
@@ -89,10 +87,6 @@ typedef struct	s_arg
 **	int closedir(DIR *dirp):
 **		- the closedir() function shall close the directory stream referred
 ** 			to by the argument dirp.
-**
-**
-**
-**
 */
  
 /*

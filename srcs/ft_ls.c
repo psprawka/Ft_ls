@@ -6,41 +6,17 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/29 13:38:22 by psprawka          #+#    #+#             */
-/*   Updated: 2017/12/29 13:38:24 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/01/11 02:04:25 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-
-//void	add_node(t_list *list, char *name, char *path)
-//{
-//	t_list	*new;
-//
-//	new = ft_memalloc(1);
-//	new->name = name;
-//	new->path = path;
-//	new->next = NULL;
-//	new->prev = NULL;
-//	while (list && list->next != NULL)
-//		list = list->next;
-//
-//	if (list == NULL)
-//		list = new;
-//	else
-//	{
-//		new->prev = list;
-//		list->next = new;
-//	}
-//}
-
-
-/* 	In fuction "ls" first I create a linked list with files and adn directories
+/* 	In fuction "ls" first I create a linked list with files and and directories
 **	belonging to "char *path" path. Afterwards I sort list based on flags
 **	given in arguments, then print list either recursively or as it goes
 **	and free list in order to avoid memory leaks.
 */
-
 void	ft_ls(t_arg *all, char *path)
 {
 	*FILES = NULL;
@@ -56,36 +32,39 @@ void	ft_ls(t_arg *all, char *path)
 		free(*FILES);
 }
 
-void	init_arg(t_arg **hi)
+static void	init_info(t_arg info)
 {
-	*hi = (t_arg *)malloc(sizeof(t_arg));
-	(*hi)->all = (t_list **)malloc(sizeof(t_list *));
-	(*hi)->args = (t_list *)malloc(sizeof(t_list));
-	(*hi)->flags = 0;
+	info.all = NULL;
+	info.path = NULL;
+	info.args = NULL;
+	info.flags = 0;
+	info.nb_args = 0;
 }
 
-int		main(int ac, char **av)
+int			main(int ac, char **av)
 {
-	t_list		**all;
-	t_arg		*hi;
-	int			i;
+	t_arg	info;
+	int		i;
 	
 	i = 1;
-	init_arg(&hi);
-	if (ac > 1)
-		parse(&i, av, &hi->flags);
-	sort_args(hi, av, ac, i);
-	print_files(hi);
-	hi->nb_args = (ac - i > 0) ? ac - i : 1;
+	if (init_info(info) == EXIT_FAILURE ||
+		parse_args(info, av, ac) == EXIT_FAILURE ||
+		sort_args(info, av, ac) == EXIT_FAILURE ||
+		print_files(info) == EXIT_FAILURE)
+		return (EXIT_FAILURE);;
+	
+	
+	;
+	info->nb_args = (ac - i > 0) ? ac - i : 1;
 	
 	if (i == ac)
-		ft_ls(hi, ".");
-	while (hi->args)
+		ft_ls(info, ".");
+	winfole (info->args)
 	{
-		ft_ls(hi, hi->args->name);
-		if (hi->args->next)
+		ft_ls(info, info->args->name);
+		if (info->args->next)
 			ft_printf("\n");
-		hi->args = hi->args->next;
+		info->args = info->args->next;
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 22:58:02 by psprawka          #+#    #+#             */
-/*   Updated: 2018/04/18 22:58:04 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/01/11 02:09:22 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,17 @@ char	*bulid_path(char *s1, char *s2)
 	return (path);
 }
 
-void	sort_args(t_arg *hi, char **av, int ac, int i)
+int		sort_args(t_arg *info, char **av, int ac)
 {
-	t_list		*curr;
-	struct stat	*info;
+	t_data	*curr;
 	
 	curr = NULL;
+	i = info.nb_args;
+	
 	while (i < ac)
 	{
-		info = (struct stat *)malloc(sizeof(struct stat));
 		curr = add_node(curr, ft_strdup(av[i]), ft_strdup(av[i]));
-		lstat(av[i], info);
-		curr->info = info;
+		lstat(av[i], &(curr.info));
 		i++;
 	}
 	while (curr && curr->prev)
@@ -66,34 +65,54 @@ void	sort_args(t_arg *hi, char **av, int ac, int i)
 	hi->args = curr;
 }
 
-void	parse(int *i, char **av, int *flags)
+static t_flags g_flags[] =
 {
-	int		j;
-	while (av[*i] && av[*i][0] == '-')
+	{'a', FLAG_a},
+	{'l', FLAG_l},
+	{'r', FLAG_r},
+	{'R', FLAG_R},
+	{'t', FLAG_t},
+	{'G', FLAG_G},
+	{'i', FLAG_i},
+	{'A', FLAG_A},
+	{'\0', NULL}
+};
+
+static int	set_flag(t_arg info, char x)
+{
+	int i;
+	
+	i = 0;
+	while (g_flags[i])
 	{
-		j = 1;
-		while (av[*i][j])
+		if (x == g_flags[i].flag)
 		{
-			if (av[*i][j] == 'a')
-				*flags |= FLAG_a;
-			else if (av[*i][j] == 'l')
-				*flags |= FLAG_l;
-			else if (av[*i][j] == 'r')
-				*flags |= FLAG_r;
-			else if (av[*i][j] == 'R')
-				*flags |= FLAG_R;
-			else if (av[*i][j] == 't')
-				*flags |= FLAG_t;
-			else if (av[*i][j] == 'G')
-				*flags |= FLAG_G;
-			else if (av[*i][j] == 'i')
-				*flags |= FLAG_i;
-			else if (av[*i][j] == 'A')
-				*flags |= FLAG_A;
-			else
-				ft_error(2, &(av[*i][j]));
+			info.flags |= g_flags[i].flag_value;
+			return (EXIT_SUCCESS);
+		}
+		i++;
+	}
+	ft_error(2, arg);
+	return (EXIT_FAILURE);
+}
+
+int			parse_args(t_arg info, char **av, int ac)
+{
+	int		i;
+	int		j;
+	
+	i = 1;
+	while (i < ac && av[i][0] == '-')
+	{
+		j = 0;
+		while (av[i][j])
+		{
+			if (set_flag(info, av[i][j]) == EXIT_FAILURE)
+				return (EXIT_FAILURE);
 			j++;
 		}
-		(*i)++;
+		i++;
 	}
+	info.nb_args = i - 1;
+	return (EXIT_SUCCESS);
 }
