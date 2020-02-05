@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/29 13:37:13 by psprawka          #+#    #+#             */
-/*   Updated: 2020/01/11 02:08:58 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/01/12 00:59:18 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,11 @@
 # include <time.h>
 # include <pwd.h>
 # include <grp.h>
-# include "libft.h"
 # include <sys/xattr.h>
+# include <stdbool.h>
+# include "libft.h"
 
-
-#include <stdio.h>
-
+//maybe move them to struct to parse?
 # define FLAG_a 1	//00000001
 # define FLAG_l 2	//00000010
 # define FLAG_r 4	//00000100
@@ -38,7 +37,6 @@
 # define FLAG_G 128	//10000000
 
 # define FLAGS	all->flags
-# define FILES	all->all
 
 # define INFO	ptr->info
 
@@ -46,20 +44,26 @@ typedef struct	s_data
 {
 	char			*path;
 	char			*name;
-	struct stat		*info;
+	struct stat		*stat; //former info
 	struct timespec	time;
 	struct s_list	*sub;
 }				t_data;
 
-typedef struct	s_arg
+typedef struct	s_info
 {
-	t_list			*file_context;
+	t_dnode			*file_context;
 	int				flags;
 	char			*path;
-	t_list			*args;
+	t_dnode			*args;
 	int				nb_args;
 	
-}				t_arg;
+}				t_info;
+
+typedef struct	s_flags
+{
+	char	flag;
+	int		flag_value;
+}				t_flags;
 
 
 /* 	------------------------- FUNCTIONS I USE IN FT_LS -------------------------
@@ -136,47 +140,51 @@ typedef struct	s_arg
 /*
 **	ft_ls_list.c
 */
-t_list	*delete_node(t_list *curr);
-t_list	*add_node(t_list *prev, char *name, char *path);
-t_list	*create_list(t_list *curr, char *path, char *name, int flags);
+// t_list	*create_list(t_list *curr, char *path, char *name, int flags);
 
 
 /*
 **	ft_ls_print.c
 */
-void	print_files(t_arg *all);
-void	print_path(t_list *all, int flags, char *path);
-void	print_path_r(t_list *all, int flags, char *path);
+// void	print_files(t_arg *all);
+int		print_files(t_info info);
+// void	print_path(t_list *all, int flags, char *path);
+// void	print_path_r(t_list *all, int flags, char *path);
 
 /*
 **	ft_ls_tools.c
 */
-void	ft_error(int nb, char *name);
-char	*bulid_path(char *s1, char *s2);
-void	sort_args(t_arg *hi, char **av, int ac, int i);
-void	parse(int *i, char **av, int *flags);
+void	ft_error(int nb, char *arg);
+// char	*bulid_path(char *s1, char *s2);
+// void	sort_args(t_arg *hi, char **av, int ac, int i);
+int		sort_args(t_info info, char **av, int ac);
+
+/*
+**	ft_ls_parse.c
+*/
+int		parse_args(t_info info, char **av, int ac);
 
 /*
 **	ft_ls_sort.c
 */
-int		sort_time(t_list *a, t_list *b);
-void	split_list(t_list *head, t_list **front, t_list **end);
-t_list	*sorted_merge(t_list *a, t_list *b, int flags);
-void	merge_sort(t_list **head, int flags);
+// int		sort_time(t_list *a, t_list *b);
+// void	split_list(t_list *head, t_list **front, t_list **end);
+// t_list	*sorted_merge(t_list *a, t_list *b, int flags);
+// void	merge_sort(t_list **head, int flags);
 
 /*
  **	ft_ls_print_long.c
  */
-char	*get_permission(t_list *ptr);
-char	filetype(t_list *ptr);
-char	*get_time(t_list *ptr);
-int		get_total(t_list *head, int size, int *spaces);
-void	print_long(t_list *ptr, int spaces);
+// char	*get_permission(t_list *ptr);
+// char	filetype(t_list *ptr);
+// char	*get_time(t_list *ptr);
+// int		get_total(t_list *head, int size, int *spaces);
+// void	print_long(t_list *ptr, int spaces);
 
 /*
  **	ft_ls_help.c
  */
-void	file_exists(char *path);
+// void	file_exists(char *path);
 
 #endif
 

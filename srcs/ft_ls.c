@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/29 13:38:22 by psprawka          #+#    #+#             */
-/*   Updated: 2020/01/11 02:04:25 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/01/12 00:58:05 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,33 +17,34 @@
 **	given in arguments, then print list either recursively or as it goes
 **	and free list in order to avoid memory leaks.
 */
-void	ft_ls(t_arg *all, char *path)
-{
-	*FILES = NULL;
-	*FILES = create_list(*FILES, ft_strdup(path), NULL, FLAGS);
-	merge_sort(FILES, FLAGS);
-	if (FLAGS & FLAG_r)
-		all->nb_args == 1 || *FILES == NULL ? print_path_r(*FILES, FLAGS, path)
-			: print_path_r(*FILES, FLAGS, NULL);
-	else
-		all->nb_args == 1 || *FILES == NULL ? print_path(*FILES, FLAGS, path)
-			: print_path(*FILES, FLAGS, NULL);
-	if (*FILES != NULL)
-		free(*FILES);
-}
+// void	ft_ls(t_arg *all, char *path)
+// {
+	// *FILES = NULL;
+	// *FILES = create_list(*FILES, ft_strdup(path), NULL, FLAGS);
+	// merge_sort(FILES, FLAGS);
+	// if (FLAGS & FLAG_r)
+	// 	all->nb_args == 1 || *FILES == NULL ? print_path_r(*FILES, FLAGS, path)
+	// 		: print_path_r(*FILES, FLAGS, NULL);
+	// else
+	// 	all->nb_args == 1 || *FILES == NULL ? print_path(*FILES, FLAGS, path)
+	// 		: print_path(*FILES, FLAGS, NULL);
+	// if (*FILES != NULL)
+	// 	free(*FILES);
+// }
 
-static void	init_info(t_arg info)
+static int	init_info(t_info info)
 {
-	info.all = NULL;
+	info.file_context = NULL;
 	info.path = NULL;
 	info.args = NULL;
 	info.flags = 0;
 	info.nb_args = 0;
+	return (EXIT_SUCCESS);
 }
 
 int			main(int ac, char **av)
 {
-	t_arg	info;
+	t_info	info;
 	int		i;
 	
 	i = 1;
@@ -51,21 +52,20 @@ int			main(int ac, char **av)
 		parse_args(info, av, ac) == EXIT_FAILURE ||
 		sort_args(info, av, ac) == EXIT_FAILURE ||
 		print_files(info) == EXIT_FAILURE)
-		return (EXIT_FAILURE);;
+		return (EXIT_FAILURE);
 	
 	
-	;
-	info->nb_args = (ac - i > 0) ? ac - i : 1;
+	// info->nb_args = (ac - i > 0) ? ac - i : 1;
 	
-	if (i == ac)
-		ft_ls(info, ".");
-	winfole (info->args)
-	{
-		ft_ls(info, info->args->name);
-		if (info->args->next)
-			ft_printf("\n");
-		info->args = info->args->next;
-	}
+	// if (i == ac)
+	// 	ft_ls(info, ".");
+	// winfole (info->args)
+	// {
+	// 	ft_ls(info, info->args->name);
+	// 	if (info->args->next)
+	// 		ft_printf("\n");
+	// 	info->args = info->args->next;
+	// }
 	return (0);
 }
 
