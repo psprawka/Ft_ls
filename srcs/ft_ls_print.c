@@ -6,12 +6,22 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 22:57:40 by psprawka          #+#    #+#             */
-/*   Updated: 2020/02/23 22:34:29 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/02/23 23:26:55 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
+/*
+**	Function print_files() is created to print only files, not directories,
+**	that are given as parameters in the command line. This function takes
+**	a list of names and checks, one by one, if any is a file. If so, function
+**	prints its name and removes it from a list. This way, there are only dirs
+**	left in list after a function.
+**	Disclaimer: this function is dumb and not modular, I personally do not like
+**	it, but ls has many exceptions that needs to be handled somehow and that
+**	is one of them.
+*/
 int		print_files(t_info *info)
 {
 	t_dnode	*tmp;
@@ -31,13 +41,24 @@ int		print_files(t_info *info)
 	return (EXIT_SUCCESS);
 }
 
-int		print_directories(t_info *info, t_dnode *head, char *path, int nb_args)
+/*
+**	Function print_directories() prints the list of files and directories
+**	starting in *head. After that, on every object that is a directory, it
+**	calls print_directories() (itself) in order to print a subdirectory.
+**	TODO: problem with first printf. It should be printed if the number of
+**	arguments (given in command line) to process is more than one, but not
+**	when its only one, thus the check "if (info->args_nb > 1)" would work,
+**	but probems with recursive calls apprear, because then even when number
+**	or args to process is one, it should be displayed for subdirectories.
+**	Try out "ls Libft/", "ls -R Libft/" and "ls -t Libft/" to understand.
+*/
+int		print_directories(t_info *info, t_dnode *head, char *path)
 {
 	t_dnode	*tmp;
 	t_data	*tmp_data;
 
 	tmp = head;
-	if (nb_args > 2)
+	// if (info->args_nb > 1 || head != info->args) <- play with this check
 		ft_printf("\n%s:\n", path);
 	while (tmp)
 	{
@@ -51,11 +72,15 @@ int		print_directories(t_info *info, t_dnode *head, char *path, int nb_args)
 	{
 		tmp_data = tmp->data;
 		if (S_ISDIR(tmp_data->stat->st_mode))
-			print_directories(info, tmp_data->sub, tmp_data->path, nb_args);
+			print_directories(info, tmp_data->sub, tmp_data->path);
 		tmp = tmp->next;
 	}
 	return (EXIT_SUCCESS);
 }
+
+/*
+** ========================== ALL TO FIX LATER ============================
+*/
 
 // void	print_path_r(t_list *all, int flags, char *path)
 // {

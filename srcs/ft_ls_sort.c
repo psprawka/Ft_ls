@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 13:04:51 by psprawka          #+#    #+#             */
-/*   Updated: 2020/02/23 17:09:29 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/02/23 23:45:27 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,13 @@ int			sort_time(t_dnode *a, t_dnode *b)
 }
 
 
-void	split_list(t_dnode *head, t_dnode **front, t_dnode **end)
+void	split_list(t_dnode *head, t_dnode **a, t_dnode **b)
 {
 	t_dnode *slow;
 	t_dnode *fast;
 
 	slow = head;
-	fast = slow->next;
+	fast = head->next;
 	
 	while (fast != NULL)
 	{
@@ -77,8 +77,8 @@ void	split_list(t_dnode *head, t_dnode **front, t_dnode **end)
 			fast = fast->next;
 		}
 	}
-	*front = head;
-	*end = slow->next;
+	*a = head;
+	*b = slow->next;
 	slow->next = NULL;
 }
 
@@ -111,19 +111,21 @@ t_dnode	*sorted_merge(t_dnode *a, t_dnode *b, int flags)
 int		merge_sort_ls(t_dnode **head, int flags)
 {
 	t_dnode *ptr;
-	t_dnode *a;
-	t_dnode *b;
+	t_dnode *a = NULL;
+	t_dnode *b = NULL;
 
 	ptr = *head;
-	if (ptr == NULL || ptr->next == NULL)
-		return EXIT_FAILURE;
-	split_list(ptr, &a, &b);
-	merge_sort_ls(&a, flags);
-	merge_sort_ls(&b, flags);
-	*head = sorted_merge(a, b, flags);
+	if (ptr && ptr->next)
+	{
+		split_list(ptr, &a, &b);
+		merge_sort_ls(&a, flags);
+		merge_sort_ls(&b, flags);
+		*head = sorted_merge(a, b, flags);
+	}
 	
 	ptr = *head;
-	while (flags & FLAG_R && ptr != NULL)
+	// printf("hm?\n");
+	while (ptr != NULL)
 	{
         t_data *data;
         
@@ -135,3 +137,8 @@ int		merge_sort_ls(t_dnode **head, int flags)
     return EXIT_SUCCESS;
 }
 
+int		sort_args(t_info *info, char **av, int ac)
+{	
+	merge_sort_ls(&(info->args), info->flags);
+	return (EXIT_SUCCESS);
+}

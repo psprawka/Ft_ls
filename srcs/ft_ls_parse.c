@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 00:11:13 by psprawka          #+#    #+#             */
-/*   Updated: 2020/02/23 17:04:59 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/02/23 23:35:20 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@
 	{'\0', 0}
 };
 
+/*
+**	Function set_flag() checks in a global table if a given flag 'x' exists.
+**	If so, it sets the flag in info.flags and returns EXIT_SUCCESS, otherwise
+**	EXIT_FAILURE is returned and program terminates.
+*/
 static int	set_flag(t_info *info, char x)
 {
 	int i;
@@ -83,12 +88,12 @@ static void	create_list_args(t_info *info, char *arg_name)
 
 /*
 **	Function parse_args() goes through all of the parameters passed to
-**	the program and finds all of the flags (indicated by '-'), then
-**	passes it to set_flag() which checks in a global table if a flag
-**	exists. If so, sets the flag in info.flags and returns EXIT_SUCCESS,
-**	otherwise EXIT_FAILURE is returned and program terminates. Otherwise,
-**	if the parameter is not a flag, argument is added to info.args, that
-**	holds all of the args to process later.
+**	the program and finds all of the flags (indicated by '-') up to first
+**	not flag parameter. For all found flags, they are one by one passed
+**	to set_flag() which checks in a global table if a flag exists. If it
+**	does not, EXIT_FAILURE is returned and program terminates. All forward
+**	parameters (after first non-flag one) are added to 'info.args' (via 
+**	create_list_args()), which holds all of the args to process later.
 */
 int			parse_args(t_info *info, char **av, int ac)
 {
@@ -107,6 +112,7 @@ int			parse_args(t_info *info, char **av, int ac)
 		}
 		i++;
 	}
+	info->args_nb = ac - i; /* not sure if it will be used yet */
 	while (i < ac)
 		create_list_args(info, av[i++]);
 	return (EXIT_SUCCESS);

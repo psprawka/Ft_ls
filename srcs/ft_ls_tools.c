@@ -6,12 +6,16 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 22:58:02 by psprawka          #+#    #+#             */
-/*   Updated: 2020/02/23 22:35:54 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/02/23 23:47:06 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
+/*
+**  Ft_error() function is called anytime something goes wrong - it displays
+**	error message based on 'error_nb'.
+*/
 void	ft_error(int nb, char *arg1, char arg2)
 {
 	if (nb == 1)
@@ -23,6 +27,10 @@ void	ft_error(int nb, char *arg1, char arg2)
 	}
 }
 
+/*
+**	Path_builder() builds a new path by coping and concating given arguments,
+**	which are old path and name of the file to concat.
+*/
 char	*path_builder(char *path, char *name)
 {
 	char *new_path;
@@ -56,13 +64,6 @@ t_data *alloc_data(char *arg_name, char *path_name)
 	new_data->time = new_data->stat ? &stat->st_mtimespec : NULL;
 	new_data->sub = NULL;
 	return (new_data);
-}
-
-
-int		sort_args(t_info *info, char **av, int ac)
-{	
-	merge_sort_ls(&(info->args), info->flags);
-	return (EXIT_SUCCESS);
 }
 
 
