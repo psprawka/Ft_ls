@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/29 13:37:13 by psprawka          #+#    #+#             */
-/*   Updated: 2020/01/12 00:59:18 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/02/23 16:22:43 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,26 +36,20 @@
 # define FLAG_i 64	//01000000
 # define FLAG_G 128	//10000000
 
-# define FLAGS	all->flags
-
-# define INFO	ptr->info
-
 typedef struct	s_data
 {
 	char			*path;
 	char			*name;
 	struct stat		*stat; //former info
-	struct timespec	time;
-	struct s_list	*sub;
+	struct timespec	*time;
+	t_dnode			*sub;
 }				t_data;
 
 typedef struct	s_info
 {
-	t_dnode			*file_context;
 	int				flags;
 	char			*path;
 	t_dnode			*args;
-	int				nb_args;
 	
 }				t_info;
 
@@ -146,23 +140,23 @@ typedef struct	s_flags
 /*
 **	ft_ls_print.c
 */
-// void	print_files(t_arg *all);
-int		print_files(t_info info);
+int		print_files(t_info *info);
+int		print_directories(t_info *info, t_dnode *head, char *path);
+
 // void	print_path(t_list *all, int flags, char *path);
 // void	print_path_r(t_list *all, int flags, char *path);
 
 /*
 **	ft_ls_tools.c
 */
-void	ft_error(int nb, char *arg);
-// char	*bulid_path(char *s1, char *s2);
-// void	sort_args(t_arg *hi, char **av, int ac, int i);
-int		sort_args(t_info info, char **av, int ac);
+void	ft_error(int nb, char *arg1, char arg2);
+char	*path_builder(char *path, char *name);
+int		sort_args(t_info *info, char **av, int ac);
 
 /*
 **	ft_ls_parse.c
 */
-int		parse_args(t_info info, char **av, int ac);
+int		parse_args(t_info *info, char **av, int ac);
 
 /*
 **	ft_ls_sort.c
@@ -170,7 +164,13 @@ int		parse_args(t_info info, char **av, int ac);
 // int		sort_time(t_list *a, t_list *b);
 // void	split_list(t_list *head, t_list **front, t_list **end);
 // t_list	*sorted_merge(t_list *a, t_list *b, int flags);
-// void	merge_sort(t_list **head, int flags);
+int		merge_sort_ls(t_dnode **head, int flags);
+
+
+
+
+t_data	*alloc_data(char *arg_name, char *path_name);
+
 
 /*
  **	ft_ls_print_long.c

@@ -6,62 +6,64 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 22:58:02 by psprawka          #+#    #+#             */
-/*   Updated: 2020/01/12 00:30:25 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/02/23 15:40:09 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	ft_error(int nb, char *arg)
+void	ft_error(int nb, char *arg1, char arg2)
 {
 	if (nb == 1)
-		ft_printf("ft_ls: %s: No such file or directory\n", arg);
+		ft_printf("ft_ls: %s: No such file or directory\n", arg1);
 	if (nb == 2)
 	{
-		ft_printf("ft_ls: illegal option -- %c\n", arg[0]);
+		ft_printf("ft_ls: illegal option -- %c\n", arg2);
 		ft_printf("usage: ft_ls [-alrtR] [file ...]\n");
 	}
 }
 
-// char	*bulid_path(char *s1, char *s2)
-// {
-// 	char	*path;
-// 	int		i;
-// 	int		j;
-	
-// 	i = 0;
-// 	j = 0;
-// 	path = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 2);
-// 	while (s1[i])
-// 	{
-// 		path[i] = s1[i];
-// 		i++;
-// 	}
-// 	path[i++] = '/';
-// 	while (s2[j])
-// 		path[i++] = s2[j++];
-// 	path[i] = '\0';
-// //	free(s1);
-// 	return (path);
-// }
-
-int		sort_args(t_info info, char **av, int ac)
+char	*path_builder(char *path, char *name)
 {
-	t_dnode	*arg;
-	t_data	*data;
+	char *new_path;
 	
-	i = info.nb_args;
-	while (i < ac)
+	new_path = ft_strnew(ft_strlen(path) + ft_strlen(name) + 1);
+	ft_strcpy(new_path, path);
+	ft_strcat(new_path, "/");
+	ft_strcat(new_path, name);
+	return (new_path);
+}
+
+t_data *alloc_data(char *arg_name, char *path_name)
+{
+	struct stat	*stat;
+	t_data		*new_data;
+	
+	if (!(stat = (struct stat *)malloc(sizeof(struct stat))) ||
+		!(new_data = (t_data *)malloc(sizeof(t_data))))
+		return (NULL);
+	
+	if (lstat(path_name, stat) == -1)
 	{
-		if (!(arg = ft_init_double_list(NULL, sizeof(t_data))) || 
-			!(data = alloc_data(ft_strdup(av[i]), ft_strdup(av[i]))) ||  
-			ft_add_back_double_list(info.args, arg) == EXIT_FAILURE || 
-			lstat(av[i], &(arg.data.stat)) == -1)
-			return (EXIT_FAILURE);
-		i++;
+		free(stat);
+		new_data->stat = NULL;
 	}
-	// if (merge_sort_ls(info.args, info.flags) == EXIT_FAILURE)
-	// 	return (EXIT_FAILURE);
+	else 
+		new_data->stat = stat;
+	new_data->name = ft_strdup(arg_name);
+	new_data->path = ft_strdup(path_name);
+	new_data->time = new_data->stat ? &stat->st_mtimespec : NULL;
+	new_data->sub = NULL;
+	
+	
+	return (new_data);
+}
+
+
+int		sort_args(t_info *info, char **av, int ac)
+{
+	if (merge_sort_ls(&(info->args), info->flags) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 

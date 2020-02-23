@@ -6,30 +6,54 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 22:57:40 by psprawka          #+#    #+#             */
-/*   Updated: 2020/01/14 20:14:56 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/02/23 16:22:32 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int		print_files(t_info info) //work on better naming - not sure what this shit does
+int		print_files(t_info *info)
 {
 	t_dnode	*tmp;
-	int		spaces;
-	bool	if_printed;
+	t_data	*tmp_data;
 
-	
-	if_printed = false;
-	tmp = info.args;
-	// get_total(ptr, 0, &spaces);
-	
+	tmp = info->args;
 	while (tmp)
 	{
-		// if (2
+		tmp_data = tmp->data;
+		if (!S_ISDIR(tmp_data->stat->st_mode))
+		{
+			ft_printf("%s\n", tmp_data->name);
+			ft_remove_double_list(&(info->args), tmp);
+		}
 		tmp = tmp->next;
 	}
-	if (info.args && if_printed)
-		ft_printf("\n");
+	return (EXIT_SUCCESS);
+}
+
+int		print_directories(t_info *info, t_dnode *head, char *path)
+{
+	t_dnode	*tmp;
+	t_data	*tmp_data;
+
+	
+	tmp = head;
+	ft_printf("\n%s:\n", path);
+	while (tmp)
+	{
+		tmp_data = tmp->data;
+		ft_printf("%s\n", tmp_data->name);
+		tmp = tmp->next;
+	}
+	
+	tmp = head;
+	while (info->flags & FLAG_R && tmp)
+	{
+		tmp_data = tmp->data;
+		if (S_ISDIR(tmp_data->stat->st_mode))
+			print_directories(info, tmp_data->sub, tmp_data->path);
+		tmp = tmp->next;
+	}
 	return (EXIT_SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/24 19:32:01 by psprawka          #+#    #+#             */
-/*   Updated: 2020/01/12 00:44:55 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/02/21 22:19:44 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,29 +61,29 @@
 // 	return (res);
 // }
 
-int		get_total(t_list *head, int size, int *spaces)
-{
-	t_list	*ptr;
-	int		i;
+// int		get_total(t_list *head, int size, int *spaces)
+// {
+// 	t_list	*ptr;
+// 	int		i;
 
-	i = 1;
-	*spaces = 0;
-	ptr = head;
-	if (ptr == NULL)
-		return (size);
-	*spaces = ptr->info->st_size;
-	while (ptr)
-	{
-		size += ptr->info->st_blocks;
-		if (*spaces < ptr->info->st_size)
-			*spaces = ptr->info->st_size;
-		ptr = ptr->next;
-	}
-	while (*spaces != 0 && i++)
-		*spaces /= 10;
-	*spaces = i < 2 ? 2 : i;
-	return (size);
-}
+// 	i = 1;
+// 	*spaces = 0;
+// 	ptr = head;
+// 	if (ptr == NULL)
+// 		return (size);
+// 	*spaces = ptr->info->st_size;
+// 	while (ptr)
+// 	{
+// 		size += ptr->info->st_blocks;
+// 		if (*spaces < ptr->info->st_size)
+// 			*spaces = ptr->info->st_size;
+// 		ptr = ptr->next;
+// 	}
+// 	while (*spaces != 0 && i++)
+// 		*spaces /= 10;
+// 	*spaces = i < 2 ? 2 : i;
+// 	return (size);
+// }
 
 // void	print_long(t_list *ptr, int spaces)
 // {
