@@ -10,7 +10,7 @@ Ft_ls handles a number of various flags, all of them are listed below:
 * `-l` List in long format. **[MANDATORY]**
 * `-r` Reverse sort. **[MANDATORY]**
 * `-t` Sort by time of last modification. **[MANDATORY]**
-* `-A` List all entries except for . and ...
+* `-A` List all entries except for `.` and `..`.
 * `-G` Coloured output.
 * `-R` Recursively search directories **[MANDATORY]**
 * `-1` Force output to be one entry per line.
