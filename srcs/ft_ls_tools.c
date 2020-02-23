@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 22:58:02 by psprawka          #+#    #+#             */
-/*   Updated: 2020/02/23 15:40:09 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/02/23 22:35:54 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_error(int nb, char *arg1, char arg2)
 char	*path_builder(char *path, char *name)
 {
 	char *new_path;
-	
+
 	new_path = ft_strnew(ft_strlen(path) + ft_strlen(name) + 1);
 	ft_strcpy(new_path, path);
 	ft_strcat(new_path, "/");
@@ -50,20 +50,18 @@ t_data *alloc_data(char *arg_name, char *path_name)
 	}
 	else 
 		new_data->stat = stat;
+	
 	new_data->name = ft_strdup(arg_name);
 	new_data->path = ft_strdup(path_name);
 	new_data->time = new_data->stat ? &stat->st_mtimespec : NULL;
 	new_data->sub = NULL;
-	
-	
 	return (new_data);
 }
 
 
 int		sort_args(t_info *info, char **av, int ac)
-{
-	if (merge_sort_ls(&(info->args), info->flags) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
+{	
+	merge_sort_ls(&(info->args), info->flags);
 	return (EXIT_SUCCESS);
 }
 

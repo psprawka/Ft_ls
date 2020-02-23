@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 22:57:40 by psprawka          #+#    #+#             */
-/*   Updated: 2020/02/23 16:22:32 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/02/23 22:34:29 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ int		print_files(t_info *info)
 	return (EXIT_SUCCESS);
 }
 
-int		print_directories(t_info *info, t_dnode *head, char *path)
+int		print_directories(t_info *info, t_dnode *head, char *path, int nb_args)
 {
 	t_dnode	*tmp;
 	t_data	*tmp_data;
 
-	
 	tmp = head;
-	ft_printf("\n%s:\n", path);
+	if (nb_args > 2)
+		ft_printf("\n%s:\n", path);
 	while (tmp)
 	{
 		tmp_data = tmp->data;
@@ -51,7 +51,7 @@ int		print_directories(t_info *info, t_dnode *head, char *path)
 	{
 		tmp_data = tmp->data;
 		if (S_ISDIR(tmp_data->stat->st_mode))
-			print_directories(info, tmp_data->sub, tmp_data->path);
+			print_directories(info, tmp_data->sub, tmp_data->path, nb_args);
 		tmp = tmp->next;
 	}
 	return (EXIT_SUCCESS);

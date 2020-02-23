@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/29 13:37:13 by psprawka          #+#    #+#             */
-/*   Updated: 2020/02/23 16:22:43 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/02/23 22:30:04 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ typedef struct	s_flags
 **	ft_ls_print.c
 */
 int		print_files(t_info *info);
-int		print_directories(t_info *info, t_dnode *head, char *path);
+int		print_directories(t_info *info, t_dnode *head, char *path, int nb_args);
 
 // void	print_path(t_list *all, int flags, char *path);
 // void	print_path_r(t_list *all, int flags, char *path);
