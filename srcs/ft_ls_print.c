@@ -33,7 +33,7 @@ int		print_files(t_info *info)
 		tmp_data = tmp->data;
 		if (!S_ISDIR(tmp_data->stat->st_mode))
 		{
-			ft_printf("%s\n", tmp_data->name);
+			printf("%s\n", tmp_data->name);
 			ft_remove_double_list(&(info->args), tmp);
 		}
 		tmp = tmp->next;
@@ -59,11 +59,11 @@ int		print_directories(t_info *info, t_dnode *head, char *path)
 
 	tmp = head;
 	// if (info->args_nb > 1 || head != info->args) <- play with this check
-		ft_printf("\n%s:\n", path);
+		printf("\n%s:\n", path);
 	while (tmp)
 	{
 		tmp_data = tmp->data;
-		ft_printf("%s\n", tmp_data->name);
+		printf("%s\n", tmp_data->name);
 		tmp = tmp->next;
 	}
 	

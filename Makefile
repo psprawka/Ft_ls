@@ -20,18 +20,17 @@ SRCS =	$(SRCS_DIR)ft_ls.c \
 		$(SRCS_DIR)ft_ls_print.c \
 		$(SRCS_DIR)ft_ls_parse.c \
 		$(SRCS_DIR)ft_ls_tools.c \
-		$(SRCS_DIR)ft_ls_list.c \
 		$(SRCS_DIR)ft_ls_sort.c \
 		$(SRCS_DIR)ft_ls_help.c \
 		$(SRCS_DIR)ft_ls_print_long.c \
 
 OBJS = $(SRCS:.c=.o)
-LIBFT = libft/libft.a
+LIBFT = Libft/libft.a
 
-BUILD_PRINT = @echo "\r\033[K\033[0;38;5;27m[FT_LS] \033[38;5;45mBuilding $<\x1B[0m"
-DONE = @echo "\033[K\033[1;38;5;200mFT_LS ready to use!\x1B[0m"
-CLEAN_O = @echo "\033[38;5;246mObject files removed! [FT_LS]\x1B[0m"
-CLEAN_A = @echo "\033[38;5;246mExecutable removed! [FT_LS]\x1B[0m"
+BUILD_PRINT = @echo "\r\033[K\033[0;38;5;27m[FT_LS] \033[38;5;45mBuilding $<\e[0m"
+DONE = @echo "\033[K\033[1;38;5;200mFT_LS ready to use!\e[0m"
+CLEAN_O = @echo "\033[38;5;246mObject files removed! [FT_LS]\e[0m"
+CLEAN_A = @echo "\033[38;5;246mExecutable removed! [FT_LS]\e[0m"
 
 all: $(NAME)
 
@@ -40,19 +39,19 @@ $(NAME) : $(LIBFT) $(OBJS) $(HEADERS)
 	$(DONE)
 
 $(LIBFT):
-	@make -C libft
+	@make -s -C Libft
 
 %.o: %.c
 	$(BUILD_PRINT)
 	@gcc $(CFLAGS) -I $(HEADERS) -c $< -o $@
 
 clean:
-	@$(MAKE) -C libft/ clean
+	@$(MAKE) -s -C Libft/ clean
 	@rm -f $(OBJS)
 	$(CLEAN_O)
 
 fclean: clean
-	@$(MAKE) -C libft/ fclean
+	@$(MAKE) -s  -C Libft/ fclean
 	@rm -f $(NAME)
 	$(CLEAN_A)
 
