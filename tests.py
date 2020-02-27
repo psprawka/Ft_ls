@@ -5,13 +5,16 @@ import subprocess
 NORMAL="\x1B[0m"
 RED='\033[0;31m'
 GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
+YELLOW='\033[1;33m'
 
 USAGE="usage: python3 tests.py [-c | -d | -r]\n  -c\tcompile the executable\n\
   -d\tshow diffs in failed tests\n  -r\tremove makefile files\n"
 
-test_cases = (' ', '.', 'author author', \
-			'Libft/', 'author Libft/ Libft/srcs/')#, \
+test_cases =    ['author author', 
+                #'Libft/',
+                'author Libft/ Libft/srcs/',
+                'Libft/ author']#, ' ', '.']#,\
+			#)#, \
 			#'-la Libft/ /Desktop', '-ltRat -ta -l Libft/'\
 			#'-tr -R ../Ft_ls/', '-r Libft/ -t author ../Ft_ls'\
 			#'-tx author', '-lRtar Libft/', '-ilR Libft/'\
@@ -28,7 +31,7 @@ if not os.path.exists("./ft_ls"):
 
 res_count = 0
 for test in test_cases:
-    print("Checking %s 'ls %s' %s testcase... " % (YELLOW, test, NORMAL), end="")
+    print("Checking '%sls %s%s' testcase... " % (YELLOW, test, NORMAL), end="")
 
     os.system("./ft_ls " + test  + " > my_ls")
     os.system("ls " + test  + " > their_ls")
@@ -42,12 +45,13 @@ for test in test_cases:
     else:
         print("%sFAIL%s!" % (RED, NORMAL))
         if "-d" in sys.argv:
-            os.system("diff my_ls their_ls")
+            os.system("diff -c my_ls their_ls")
             print("")
 
 dec = "============================="
 print("\n%s\nRESULT | PASSED: %s%d%s FAILED: %s%d%s\n%s\n" % \
     (dec, GREEN, res_count, NORMAL, RED, len(test_cases) - res_count, NORMAL, dec))
-os.system("rm my_ls their_ls")
+
 if "-r" in sys.argv:
+    os.system("rm my_ls their_ls")
     os.system("make fclean")

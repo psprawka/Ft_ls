@@ -43,6 +43,7 @@ int			main(int ac, char **av)
 	tmp = info.args;
 	while (tmp)
 	{
+		//printf("?\n");
 		tmp_data = tmp->data;
 		print_directories(&info, tmp_data->sub, tmp_data->path);
 		tmp = tmp->next;

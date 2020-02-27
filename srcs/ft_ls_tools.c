@@ -50,6 +50,8 @@ t_data *alloc_data(char *arg_name, char *path_name)
 	if (!(stat = (struct stat *)malloc(sizeof(struct stat))) ||
 		!(new_data = (t_data *)malloc(sizeof(t_data))))
 		return (NULL);
+	
+	lstat(path_name, stat);
 	new_data->stat = stat;
 	new_data->name = ft_strdup(arg_name);
 	new_data->path = ft_strdup(path_name);

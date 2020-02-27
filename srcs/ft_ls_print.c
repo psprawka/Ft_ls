@@ -28,16 +28,19 @@ int		print_files(t_info *info)
 	t_data	*tmp_data;
 
 	tmp = info->args;
+	//ft_print_double_list(info->args, NULL);
 	while (tmp)
 	{
 		tmp_data = tmp->data;
 		if (!S_ISDIR(tmp_data->stat->st_mode))
 		{
+
 			printf("%s\n", tmp_data->name);
 			ft_remove_double_list(&(info->args), tmp);
 		}
 		tmp = tmp->next;
 	}
+	//ft_print_double_list(info->args, NULL);
 	return (EXIT_SUCCESS);
 }
 
@@ -58,7 +61,7 @@ int		print_directories(t_info *info, t_dnode *head, char *path)
 	t_data	*tmp_data;
 
 	tmp = head;
-	// if (info->args_nb > 1 || head != info->args) <- play with this check
+	if (info->args_nb > 2 || head != info->args)// <- play with this check
 		printf("\n%s:\n", path);
 	while (tmp)
 	{
