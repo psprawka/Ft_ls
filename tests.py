@@ -11,16 +11,26 @@ USAGE="usage: python3 tests.py [-c | -d | -r]\n  -c\tcompile the executable\n\
   -d\tshow diffs in failed tests\n  -r\tremove makefile files\n"
 
 test_cases =    ['author author', 
-                #'Libft/',
+                'Libft/',
                 'author Libft/ Libft/srcs/',
-                'Libft/ author']#, ' ', '.']#,\
-			#)#, \
-			#'-la Libft/ /Desktop', '-ltRat -ta -l Libft/'\
-			#'-tr -R ../Ft_ls/', '-r Libft/ -t author ../Ft_ls'\
-			#'-tx author', '-lRtar Libft/', '-ilR Libft/'\
-			#'-A -a -A -AA -a Libft/srcs/', '-Rrtla /etc/dev/'\
-			#'-t .', '-lr ..', '-Rrt /Desktop srcs/', '-A Libft/',\
-            # '-l -R -r /etc/dev/')
+                'Libft/ author',
+                ' ',
+                '.',
+	            '-la Libft/ /Desktop',
+                #'-ltRat -ta -l Libft/',
+			    '-tr -R ../Ft_ls/',
+                '-r Libft/ -t author ../Ft_ls',
+			    '-t author Libft/ ',
+                '-t Libft/']
+                #'-lRtar Libft/',
+                #'-ilR Libft/',
+                #'-A -a -A -AA -a Libft/srcs/',
+                #'-Rrtla /etc/dev/',
+			    #'-t .',
+                #'-lr ..',
+                #'-Rrt /Desktop srcs/',
+                #'-A Libft/',
+                #'-l -R -r /etc/dev/']
 
 if "-c" in sys.argv:
     os.system("make")
