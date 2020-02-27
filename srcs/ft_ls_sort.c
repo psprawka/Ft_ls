@@ -124,7 +124,7 @@ int		merge_sort_ls(t_dnode **head, int flags)
 	}
 	
 	ptr = *head;
-	printf("hm?\n");
+	//printf("hm?\n");
 	while (ptr != NULL)
 	{
         t_data *data;
