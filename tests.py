@@ -21,15 +21,15 @@ test_cases =    ['author author',
 			    '-tr -R ../Ft_ls/',
                 '-r Libft/ -t author ../Ft_ls',
 			    '-t author Libft/ ',
-                '-t Libft/']
+                '-t Libft/',
                 #'-lRtar Libft/',
-                #'-ilR Libft/',
-                #'-A -a -A -AA -a Libft/srcs/',
+                '-ilR Libft/',
+                '-A -a -A -AA -a Libft/srcs/',
                 #'-Rrtla /etc/dev/',
-			    #'-t .',
-                #'-lr ..',
-                #'-Rrt /Desktop srcs/',
-                #'-A Libft/',
+			    '-t .',
+                '-lr ..',
+                '-Rrt /Desktop srcs/',
+                '-A Libft/']
                 #'-l -R -r /etc/dev/']
 
 if "-c" in sys.argv:
