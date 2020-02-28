@@ -34,7 +34,6 @@ int		print_files(t_info *info)
 		tmp_data = tmp->data;
 		if (!S_ISDIR(tmp_data->stat->st_mode))
 		{
-
 			printf("%s\n", tmp_data->name);
 			ft_remove_double_list(&(info->args), tmp);
 		}
@@ -60,23 +59,26 @@ int		print_directories(t_info *info, t_dnode *head, char *path)
 	t_dnode	*tmp;
 	t_data	*tmp_data;
 
-	tmp = head;
-	if (info->args_nb > 2 || head != info->args)// <- play with this check
-		printf("\n%s:\n", path);
+	tmp = info->flags & FLAG_r ? ft_get_last_double_list(head) : head;
+	//if (info->args_nb > 1 || FLAG_R & info->flags) //|| head != info->args)// <- play with this check
+		//printf("\n%s:\n", path);
 	while (tmp)
 	{
 		tmp_data = tmp->data;
 		printf("%s\n", tmp_data->name);
-		tmp = tmp->next;
+		tmp = info->flags & FLAG_r ? tmp->prev : tmp->next;
 	}
 	
-	tmp = head;
+	tmp = info->flags & FLAG_r ? ft_get_last_double_list(head) : head;
 	while (info->flags & FLAG_R && tmp)
 	{
 		tmp_data = tmp->data;
 		if (S_ISDIR(tmp_data->stat->st_mode))
+		{
+			printf("\n%s:\n", tmp_data->path);
 			print_directories(info, tmp_data->sub, tmp_data->path);
-		tmp = tmp->next;
+		}
+		tmp = info->flags & FLAG_r ? tmp->prev : tmp->next;
 	}
 	return (EXIT_SUCCESS);
 }

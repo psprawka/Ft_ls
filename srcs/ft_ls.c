@@ -43,8 +43,9 @@ int			main(int ac, char **av)
 	tmp = info.args;
 	while (tmp)
 	{
-		//printf("?\n");
 		tmp_data = tmp->data;
+		if (info.args_nb > 1)// || FLAG_R & info->flags) //|| head != info->args)// <- play with this check
+			printf("\n%s:\n", tmp_data->path);
 		print_directories(&info, tmp_data->sub, tmp_data->path);
 		tmp = tmp->next;
 	}
