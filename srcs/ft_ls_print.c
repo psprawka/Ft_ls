@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 22:57:40 by psprawka          #+#    #+#             */
-/*   Updated: 2020/02/23 23:26:55 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/03/10 19:23:06 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int		print_directories(t_info *info, t_dnode *head, char *path)
 	t_dnode	*tmp;
 	t_data	*tmp_data;
 
+	// if ()
 	tmp = info->flags & FLAG_r ? ft_get_last_double_list(head) : head;
 	//if (info->args_nb > 1 || FLAG_R & info->flags) //|| head != info->args)// <- play with this check
 		//printf("\n%s:\n", path);

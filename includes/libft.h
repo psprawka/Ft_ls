@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/20 18:35:16 by psprawka          #+#    #+#             */
-/*   Updated: 2020/01/11 02:51:27 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/03/10 19:21:29 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 */
 void			ft_putchar_fd(char c, int fd);
 void			ft_putendl_fd(char *s, int fd);
-void			ft_putnbr_fd(long long nb, int fd);
+void			ft_putnbr_fd();//long long nb, int fd);
 void			ft_putstr_fd(char *s, int fd);
 int				ft_get_next_line(int fd, char **line);
 int				ft_printf(const char *format, ...);
@@ -52,8 +52,8 @@ void			remove_node(t_queue **queue, t_node *prev, t_node *remove);
 */
 int				ft_add_back_double_list(t_dnode **list, t_dnode *node);
 int				ft_add_front_double_list(t_dnode **list, t_dnode *node);
-void			ft_free_double_list(t_dnode *list, void (*fct_free)(void *));
 t_dnode         *ft_get_last_double_list(t_dnode *head);
+void			ft_free_double_list(t_dnode *list, void (*fct_free)(void *));
 t_dnode		    *ft_init_double_list(void *data, size_t dsize);
 void			ft_print_double_list(t_dnode *list, void (*fct_print)(void *));
 void			ft_remove_double_list(t_dnode **list, t_dnode *node);
