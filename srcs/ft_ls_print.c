@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 22:57:40 by psprawka          #+#    #+#             */
-/*   Updated: 2020/03/10 19:23:06 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/03/10 20:55:30 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 **	prints its name and removes it from a list. This way, there are only dirs
 **	left in list after a function.
 **	Disclaimer: this function is dumb and not modular, I personally do not like
-**	it, but ls has many exceptions that needs to be handled somehow and that
+**	it, but ls has many exceptions that need to be handled somehow and that
 **	is one of them.
 */
 int		print_files(t_info *info)
@@ -27,17 +27,23 @@ int		print_files(t_info *info)
 	t_dnode	*tmp;
 	t_data	*tmp_data;
 
-	tmp = info->args;
+	tmp = info->flags & FLAG_r ? ft_get_last_double_list(info->args) : info->args;
 	//ft_print_double_list(info->args, NULL);
 	while (tmp)
 	{
 		tmp_data = tmp->data;
 		if (!S_ISDIR(tmp_data->stat->st_mode))
 		{
-			printf("%s\n", tmp_data->name);
-			ft_remove_double_list(&(info->args), tmp);
+			if (tmp_data->name[0] == '-')
+				ft_error(1, tmp_data->name, '\0');
+			else
+				printf("%s\n", tmp_data->name);
+			t_dnode *to_rm = tmp;
+			//tmp = info->flags & FLAG_r ? tmp->prev : tmp->next;
+			ft_remove_double_list(&(info->args), to_rm);
 		}
-		tmp = tmp->next;
+		//else
+			tmp = info->flags & FLAG_r ? tmp->prev : tmp->next;
 	}
 	//ft_print_double_list(info->args, NULL);
 	return (EXIT_SUCCESS);
@@ -59,7 +65,6 @@ int		print_directories(t_info *info, t_dnode *head, char *path)
 	t_dnode	*tmp;
 	t_data	*tmp_data;
 
-	// if ()
 	tmp = info->flags & FLAG_r ? ft_get_last_double_list(head) : head;
 	//if (info->args_nb > 1 || FLAG_R & info->flags) //|| head != info->args)// <- play with this check
 		//printf("\n%s:\n", path);

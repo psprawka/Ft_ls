@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/29 13:38:22 by psprawka          #+#    #+#             */
-/*   Updated: 2020/02/23 23:40:56 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/03/10 21:49:54 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int			main(int ac, char **av)
 	t_info	info;
 	t_dnode	*tmp;
 	t_data	*tmp_data;
+	bool	bs = true;
 	
 	if (init_info(&info) == EXIT_FAILURE ||
 		parse_args(&info, av, ac) == EXIT_FAILURE ||
@@ -40,14 +41,15 @@ int			main(int ac, char **av)
 		print_files(&info) == EXIT_FAILURE) 
 		return (EXIT_FAILURE);
 	
-	tmp = info.args;
+	tmp = info.flags & FLAG_r ? ft_get_last_double_list(info.args) : info.args;
 	while (tmp)
 	{
 		tmp_data = tmp->data;
-		if (info.args_nb > 1)// || FLAG_R & info->flags) //|| head != info->args)// <- play with this check
-			printf("\n%s:\n", tmp_data->path);
+		if (info.args_nb > 1 || FLAG_R & info.flags) //|| head != info->args)// <- play with this check
+			printf("%s%s:\n", bs && FLAG_R & info.flags ? "" : "\n", tmp_data->path);//, FLAG_R & info.flags ? "ssij" : "");
 		print_directories(&info, tmp_data->sub, tmp_data->path);
-		tmp = tmp->next;
+		tmp = info.flags & FLAG_r ? tmp->prev : tmp->next;
+		bs = false;
 	}
 	return (0);
 }

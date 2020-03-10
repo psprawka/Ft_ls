@@ -14,26 +14,37 @@ test_cases =    ['author author',
                 'Libft/',
                 'author Libft/ Libft/srcs/',
                 'Libft/ author',
-                #' ',
+                ' ',
+                '-a .',
                 '.',
-                #'-R .',
+                '-r author /home/psprawka/Desktop/ Libft/',
+                '-R .',
 	            #'-la Libft/ /Desktop',
                 #'-ltRat -ta -l Libft/',
 			    #'-tr -R ../Ft_ls/',
-                '-r Libft/ -t author /home/dreem/Desktop/',
+                #'-r Libft/ -y author /home/psprawka/Desktop/',
+                'Libft/ author Makefile ft_ls my_ls',
+                '-r Libft/ author Makefile ft_ls my_ls ',
+                '-r Libft/ author /home/psprawka/Desktop/',
 			    '-t author Libft/ ',
                 '-t Libft/',
                 '-tr Libft/srcs/ author Makefile Libft/',
-                #'-R Libft/srcs .',
+                '-a Libft/',
+                '-at /home/psprawka/',
+                '-R Libft/srcs .',
                 #'-lRtar Libft/',
                 #'-ilR Libft/',
-                #'-A -a -A -AA -a Libft/srcs/',
+                '-A -a -A -AA -a Libft/srcs/',
                 #'-Rrtla /etc/dev/',
-			    '-t .',
+			    '-t /home/',
+                '-at Libft/srcs/',
                 '..',
                 '-r .',
                 '-r Libft/',
-                #'-Rrt /Desktop srcs/',
+                '-R /home/psprawka/42 srcs/',
+                '-Rr /home/psprawka/42 srcs/',
+                '-Rt /home/psprawka/.cache srcs/',
+                '-Rrt /home/psprawka/Dreem-Embedded-Nano srcs/',
                 '-t -t -t -t  Libft/']
                 #'-l -R -r /etc/dev/']
 
@@ -60,7 +71,7 @@ for test in test_cases:
     else:
         print("%sFAIL%s!" % (RED, NORMAL))
         if "-d" in sys.argv:
-            os.system("diff -c my_ls their_ls")
+            os.system("diff -y my_ls their_ls")
             print("")
 
 dec = "============================="

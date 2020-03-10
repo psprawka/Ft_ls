@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 00:11:13 by psprawka          #+#    #+#             */
-/*   Updated: 2020/02/23 23:35:20 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/03/10 21:35:49 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ int			parse_args(t_info *info, char **av, int ac)
 		i++;
 	}
 	info->args_nb = ac - i; /* not sure if it will be used yet */
+	if (i == ac)
+		create_list_args(info, ".");
 	while (i < ac)
 		create_list_args(info, av[i++]);
 	return (EXIT_SUCCESS);
