@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 00:11:13 by psprawka          #+#    #+#             */
-/*   Updated: 2020/03/10 21:35:49 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/03/11 20:39:03 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,9 @@ static int	create_recursive_list(t_info *info, t_dnode *node, t_data *curr_data)
 		
 	while ((file = readdir(directory)) != NULL)
 	{
-		if (file->d_name[0] == '.' && !(info->flags & FLAG_a))
+		// if (file->d_name[0] == '.' && !(info->flags & FLAG_a))
+		// 	continue;
+		if (if_process_file(info, file->d_name) == false)
 			continue;
 		new_data = alloc_data(file->d_name, path_builder(curr_data->path, file->d_name));
 		new_node = ft_init_double_list(new_data, sizeof(t_data));

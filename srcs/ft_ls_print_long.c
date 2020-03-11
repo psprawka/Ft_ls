@@ -6,60 +6,61 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/24 19:32:01 by psprawka          #+#    #+#             */
-/*   Updated: 2020/02/21 22:19:44 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/03/11 22:31:24 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-// #define MODE_PERM	INFO->st_mode
+/*
+** SIZE_BUFF = file type + permissions + time  + ...
+*/
+#define SIZE_BUFF 1 + 9 + 12 + 1024
 
-// char	*get_permission(t_list *ptr)
-// {
-// 	char	*perm;
+static void get_permission(t_data *f_data, char *str)
+{
+    ft_strcat(str, f_data->stat->st_mode & S_IRUSR ? "r" : "-");
+    ft_strcat(str, f_data->stat->st_mode & S_IWUSR ? "w" : "-");
+    ft_strcat(str, f_data->stat->st_mode & S_IXUSR ? "x" : "-");
+    ft_strcat(str, f_data->stat->st_mode & S_IRGRP ? "r" : "-");
+    ft_strcat(str, f_data->stat->st_mode & S_IWGRP ? "w" : "-");
+    ft_strcat(str, f_data->stat->st_mode & S_IXGRP ? "x" : "-");
+    ft_strcat(str, f_data->stat->st_mode & S_IROTH ? "r" : "-");
+    ft_strcat(str, f_data->stat->st_mode & S_IWOTH ? "w" : "-");
+    ft_strcat(str, f_data->stat->st_mode & S_IXOTH ? "x" : "-");
+}
 
-// 	perm = ft_strnew(1);
-// 	perm = MODE_PERM & S_IRUSR ? ft_strjoin(perm, "r") : ft_strjoin(perm, "-");
-// 	perm = MODE_PERM & S_IWUSR ? ft_strjoin(perm, "w") : ft_strjoin(perm, "-");
-// 	perm = MODE_PERM & S_IXUSR ? ft_strjoin(perm, "x") : ft_strjoin(perm, "-");
-// 	perm = MODE_PERM & S_IRGRP ? ft_strjoin(perm, "r") : ft_strjoin(perm, "-");
-// 	perm = MODE_PERM & S_IWGRP ? ft_strjoin(perm, "w") : ft_strjoin(perm, "-");
-// 	perm = MODE_PERM & S_IXGRP ? ft_strjoin(perm, "x") : ft_strjoin(perm, "-");
-// 	perm = MODE_PERM & S_IROTH ? ft_strjoin(perm, "r") : ft_strjoin(perm, "-");
-// 	perm = MODE_PERM & S_IWOTH ? ft_strjoin(perm, "w") : ft_strjoin(perm, "-");
-// 	perm = MODE_PERM & S_IXOTH ? ft_strjoin(perm, "x") : ft_strjoin(perm, "-");
-// 	return (perm);
-// }
+static void get_filetype(t_data *f_data, char *str)
+{
+    char *type;
+    
+	if (S_ISREG(f_data->stat->st_mode))
+		type = "-";
+	else if (S_ISDIR(f_data->stat->st_mode))
+		type = "d";
+	else if (S_ISCHR(f_data->stat->st_mode))
+		type = "c";
+	else if (S_ISBLK(f_data->stat->st_mode))
+		type = "b";
+	else if (S_ISFIFO(f_data->stat->st_mode))
+		type = "p";
+	else if (S_ISLNK(f_data->stat->st_mode))
+		type = "l";
+	else if (S_ISSOCK(f_data->stat->st_mode))
+		type = "s";
+    
+    ft_bzero(str, SIZE_BUFF);
+    ft_strcpy(str, type);
+}
 
-// char	filetype(t_list *ptr)
-// {
-// 	if (S_ISREG(ptr->info->st_mode))
-// 		return ('-');
-// 	if (S_ISDIR(ptr->info->st_mode))
-// 		return ('d');
-// 	if (S_ISCHR(ptr->info->st_mode))
-// 		return ('c');
-// 	if (S_ISBLK(ptr->info->st_mode))
-// 		return ('b');
-// 	if (S_ISFIFO(ptr->info->st_mode))
-// 		return ('p');
-// 	if (S_ISLNK(ptr->info->st_mode))
-// 		return ('l');
-// 	if (S_ISSOCK(ptr->info->st_mode))
-// 		return ('s');
-// 	return ('\0');
-// }
-
-// char	*get_time(t_list *ptr)
-// {
-// 	char *res;
-// 	char *time;
+static void get_time(t_data *f_data, char *str)
+{
+	char *time;
 	
-// 	res = ft_strnew(32);
-// 	time = ctime(&(ptr->time.tv_sec));
-// 	res = ft_strncat(res, time + 4, 12);
-// 	return (res);
-// }
+	time = ctime(&(f_data->time->tv_sec));
+    time[4 + 12] = '\0';
+    ft_strcat(str, time + 4);
+}
 
 // int		get_total(t_list *head, int size, int *spaces)
 // {
@@ -85,25 +86,30 @@
 // 	return (size);
 // }
 
-// void	print_long(t_list *ptr, int spaces)
-// {
-// 	char			*tmp;
-// 	struct group	*grp;
-// 	struct passwd	*pwd;
+int         print_long(t_info *info, t_data *f_data)
+{
+    struct group	*grp;
+	struct passwd	*pwd;
+    char			tmp[SIZE_BUFF];
 
-// 	grp = getgrgid(INFO->st_gid);
-// 	pwd = getpwuid(INFO->st_uid);
-// 	tmp = get_permission(ptr);
-// 	ft_printf("%c%s", filetype(ptr), tmp);
-// 	//	free(tmp);
-	
-// 	tmp = ft_strnew(1024);
-// 	listxattr(bulid_path(ptr->path, ptr->name), tmp, 1024, XATTR_NOFOLLOW) ?
-// 	ft_printf("@") : ft_printf(" ");
-// 	//	free(tmp);
-	
-// 	tmp = get_time(ptr);
-// 	ft_printf(" %d %s  %s %*lld %s %s\n", INFO->st_nlink, pwd->pw_name,
-// 			  grp->gr_name, spaces, INFO->st_size, tmp, ptr->name);
-// 	//	free(tmp);
-// }
+    grp = getgrgid(f_data->stat->st_gid);
+	pwd = getpwuid(f_data->stat->st_uid);
+    
+    get_filetype(f_data, tmp);
+    get_permission(f_data, tmp);
+    ft_strcat(tmp, " ");
+    ft_strcat(tmp, ft_itoa(f_data->stat->st_nlink));
+    ft_strcat(tmp, " ");
+    ft_strcat(tmp, pwd->pw_name);
+    ft_strcat(tmp, " ");
+    ft_strcat(tmp, grp->gr_name);
+    ft_strcat(tmp, " "); //may be "  " on labs comp
+    ft_strcat(tmp, ft_itoa(f_data->stat->st_size));
+    ft_strcat(tmp, " ");
+    get_time(f_data, tmp);
+    ft_strcat(tmp, " ");
+    ft_strcat(tmp, f_data->name);
+    printf("%s\n", tmp);
+    
+    return (EXIT_SUCCESS);
+}

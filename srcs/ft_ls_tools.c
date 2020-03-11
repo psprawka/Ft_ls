@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 22:58:02 by psprawka          #+#    #+#             */
-/*   Updated: 2020/02/23 23:47:06 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/03/11 20:44:08 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,24 @@ char	*path_builder(char *path, char *name)
 	ft_strcat(new_path, name);
 	return (new_path);
 }
+
+bool	if_process_file(t_info *info, char *filename)
+{
+	
+	if (info->flags & FLAG_a)
+		return (true);
+	
+	// printf("[%d][%d][%s]\n", ft_strcmp(filename, "."), ft_strcmp(filename, ".."), filename);
+	if (!ft_strcmp(filename, ".") || !ft_strcmp(filename, ".."))
+		return (false);
+	
+
+	if (!(info->flags & FLAG_A) && filename[0] == '.')
+		return (false);
+	
+	return (true);
+}
+
 
 t_data *alloc_data(char *arg_name, char *path_name)
 {

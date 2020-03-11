@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/29 13:37:13 by psprawka          #+#    #+#             */
-/*   Updated: 2020/02/23 22:59:47 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/03/11 21:53:15 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,12 +147,6 @@ int		print_directories(t_info *info, t_dnode *head, char *path);
 // void	print_path(t_list *all, int flags, char *path);
 // void	print_path_r(t_list *all, int flags, char *path);
 
-/*
-**	ft_ls_tools.c
-*/
-void	ft_error(int nb, char *arg1, char arg2);
-char	*path_builder(char *path, char *name);
-int		sort_args(t_info *info, char **av, int ac);
 
 /*
 **	ft_ls_parse.c
@@ -162,24 +156,22 @@ int		parse_args(t_info *info, char **av, int ac);
 /*
 **	ft_ls_sort.c
 */
-// int		sort_time(t_list *a, t_list *b);
-// void	split_list(t_list *head, t_list **front, t_list **end);
-// t_list	*sorted_merge(t_list *a, t_list *b, int flags);
 int		merge_sort_ls(t_dnode **head, int flags);
 
 
-
+/*
+**	ft_ls_tools.c
+*/
 t_data	*alloc_data(char *arg_name, char *path_name);
-
+bool	if_process_file(t_info *info, char *filename);
+void	ft_error(int nb, char *arg1, char arg2);
+char	*path_builder(char *path, char *name);
+int		sort_args(t_info *info, char **av, int ac);
 
 /*
  **	ft_ls_print_long.c
  */
-// char	*get_permission(t_list *ptr);
-// char	filetype(t_list *ptr);
-// char	*get_time(t_list *ptr);
-// int		get_total(t_list *head, int size, int *spaces);
-// void	print_long(t_list *ptr, int spaces);
+int		print_long(t_info *info, t_data *f_data);
 
 /*
  **	ft_ls_help.c

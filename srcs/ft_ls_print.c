@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 22:57:40 by psprawka          #+#    #+#             */
-/*   Updated: 2020/03/10 20:55:30 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/03/11 22:30:29 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		print_files(t_info *info)
 			if (tmp_data->name[0] == '-')
 				ft_error(1, tmp_data->name, '\0');
 			else
-				printf("%s\n", tmp_data->name);
+				FLAG_l & info->flags ? print_long(info, tmp_data) : printf("%s\n", tmp_data->name);
 			t_dnode *to_rm = tmp;
 			//tmp = info->flags & FLAG_r ? tmp->prev : tmp->next;
 			ft_remove_double_list(&(info->args), to_rm);
@@ -71,7 +71,7 @@ int		print_directories(t_info *info, t_dnode *head, char *path)
 	while (tmp)
 	{
 		tmp_data = tmp->data;
-		printf("%s\n", tmp_data->name);
+		FLAG_l & info->flags ? print_long(info, tmp_data) : printf("%s\n", tmp_data->name);
 		tmp = info->flags & FLAG_r ? tmp->prev : tmp->next;
 	}
 	
@@ -81,7 +81,7 @@ int		print_directories(t_info *info, t_dnode *head, char *path)
 		tmp_data = tmp->data;
 		if (S_ISDIR(tmp_data->stat->st_mode))
 		{
-			printf("\n%s:\n", tmp_data->path);
+			FLAG_l & info->flags ? print_long(info, tmp_data) : printf("\n%s:\n", tmp_data->path);
 			print_directories(info, tmp_data->sub, tmp_data->path);
 		}
 		tmp = info->flags & FLAG_r ? tmp->prev : tmp->next;
@@ -129,33 +129,3 @@ int		print_directories(t_info *info, t_dnode *head, char *path)
 // 	}
 // }
 
-// void	print_path(t_list *all, int flags, char *path)
-// {
-// 	t_list	*ptr;
-// 	int		spaces;
-
-// 	ptr = all;
-// 	if (path == NULL || !ptr || (ptr && ft_strcmp(ptr->path, path)))
-// 		!ptr ? ft_printf("%s:\n", path) : ft_printf("%s:\n", ptr->path);
-// 	if (flags & FLAG_l && ptr)
-// 		ft_printf("total %d\n", get_total(ptr, 0, &spaces));
-// 	while (ptr && ptr->next != NULL)
-// 	{
-// 		flags & FLAG_i ? ft_printf("%d ", ptr->info->st_ino) : spaces;
-// 		!(flags & FLAG_l) ? ft_printf("%s\n", ptr->name) : print_long(ptr, spaces);
-// 		ptr = ptr->next;
-// 	}
-// 	if (ptr)
-// 	{
-// 		flags & FLAG_i ? ft_printf("%d ", ptr->info->st_ino) : spaces;
-// 		!(flags & FLAG_l) ? ft_printf("%s\n", ptr->name) : print_long(ptr, spaces);
-// 	}
-// 	ptr = all;
-// 	while (flags & FLAG_R && ptr != NULL)
-// 	{
-// 		if (S_ISDIR(ptr->info->st_mode) && ft_strncmp(ptr->name, ".", 1) && ft_printf("\n"))
-// 			ptr->sub ? print_path(ptr->sub, flags, path) :
-// 			print_path(ptr->sub, flags, bulid_path(ptr->path, ptr->name));
-// 		ptr = ptr->next;
-// 	}
-// }
