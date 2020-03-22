@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 22:57:40 by psprawka          #+#    #+#             */
-/*   Updated: 2020/03/22 10:09:42 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/03/22 17:19:02 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +66,19 @@ int		print_directories(t_info *info, t_dnode *head, char *path)
 	t_data	*tmp_data;
 
 	tmp = info->flags & FLAG_r ? ft_get_last_double_list(head) : head;
+	info->left_args_nb--;
 	//if (info->args_nb > 1 || FLAG_R & info->flags) //|| head != info->args)// <- play with this check
 		//printf("\n%s:\n", path);
 	if (info->flags & FLAG_l)
-		printf("total: %d\n", calculate_total_size(tmp));
+		printf("total %d\n", calculate_total_size(tmp));
 	while (tmp)
 	{
 		tmp_data = tmp->data;
 		FLAG_l & info->flags ? print_long(info, tmp_data) : printf("%s\n", tmp_data->name);
 		tmp = info->flags & FLAG_r ? tmp->prev : tmp->next;
 	}
+	if (info->flags & FLAG_l && !(info->flags & FLAG_R) && info->left_args_nb)
+		printf("\n");
 	
 	tmp = info->flags & FLAG_r ? ft_get_last_double_list(head) : head;
 	while (info->flags & FLAG_R && tmp)
@@ -83,7 +86,7 @@ int		print_directories(t_info *info, t_dnode *head, char *path)
 		tmp_data = tmp->data;
 		if (S_ISDIR(tmp_data->stat->st_mode))
 		{
-			FLAG_l & info->flags ? print_long(info, tmp_data) : printf("\n%s:\n", tmp_data->path);
+			printf("\n%s:\n", tmp_data->path);
 			print_directories(info, tmp_data->sub, tmp_data->path);
 		}
 		tmp = info->flags & FLAG_r ? tmp->prev : tmp->next;

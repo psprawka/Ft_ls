@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/24 19:32:01 by psprawka          #+#    #+#             */
-/*   Updated: 2020/03/22 10:21:44 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/03/22 10:28:36 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,19 +62,15 @@ static void get_time(t_data *f_data, char *str)
     ft_strcat(str, time + 4);
 }
 
-int  calculate_total_size(t_dnode *head) //parent data
+int         calculate_total_size(t_dnode *head)
 {
-//_dnode *head;
     t_data	*tmp_data;
     int     total_size;
    
 	total_size = 0;
-	//head = p_data->sub;
-    //printf("%s\n", p_data->name);
 	while (head)
 	{
         tmp_data = head->data;
-        printf("hmmm %s %ld %ld\n", tmp_data->name, tmp_data->stat->st_blocks, tmp_data->stat->st_size/1024);
 		total_size += tmp_data->stat->st_blocks;
 		head = head->next;
 	}

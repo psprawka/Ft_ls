@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/29 13:37:13 by psprawka          #+#    #+#             */
-/*   Updated: 2020/03/22 10:09:32 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/03/22 16:38:42 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct	s_info
 	char			*path;
 	t_dnode			*args;
 	int				args_nb; //number of args without flags
-	
+	int				left_args_nb; //number of args without flags
 }				t_info;
 
 typedef struct	s_flags
