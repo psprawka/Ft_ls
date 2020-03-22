@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/29 13:37:13 by psprawka          #+#    #+#             */
-/*   Updated: 2020/03/11 21:53:15 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/03/22 10:09:32 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ int		sort_args(t_info *info, char **av, int ac);
  **	ft_ls_print_long.c
  */
 int		print_long(t_info *info, t_data *f_data);
+int		calculate_total_size(t_dnode *head);
 
 /*
  **	ft_ls_help.c

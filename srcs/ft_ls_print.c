@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 22:57:40 by psprawka          #+#    #+#             */
-/*   Updated: 2020/03/11 22:30:29 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/03/22 10:09:42 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ int		print_directories(t_info *info, t_dnode *head, char *path)
 	tmp = info->flags & FLAG_r ? ft_get_last_double_list(head) : head;
 	//if (info->args_nb > 1 || FLAG_R & info->flags) //|| head != info->args)// <- play with this check
 		//printf("\n%s:\n", path);
+	if (info->flags & FLAG_l)
+		printf("total: %d\n", calculate_total_size(tmp));
 	while (tmp)
 	{
 		tmp_data = tmp->data;

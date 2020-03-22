@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/24 19:32:01 by psprawka          #+#    #+#             */
-/*   Updated: 2020/03/11 22:31:24 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/03/22 10:21:44 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,29 +62,24 @@ static void get_time(t_data *f_data, char *str)
     ft_strcat(str, time + 4);
 }
 
-// int		get_total(t_list *head, int size, int *spaces)
-// {
-// 	t_list	*ptr;
-// 	int		i;
-
-// 	i = 1;
-// 	*spaces = 0;
-// 	ptr = head;
-// 	if (ptr == NULL)
-// 		return (size);
-// 	*spaces = ptr->info->st_size;
-// 	while (ptr)
-// 	{
-// 		size += ptr->info->st_blocks;
-// 		if (*spaces < ptr->info->st_size)
-// 			*spaces = ptr->info->st_size;
-// 		ptr = ptr->next;
-// 	}
-// 	while (*spaces != 0 && i++)
-// 		*spaces /= 10;
-// 	*spaces = i < 2 ? 2 : i;
-// 	return (size);
-// }
+int  calculate_total_size(t_dnode *head) //parent data
+{
+//_dnode *head;
+    t_data	*tmp_data;
+    int     total_size;
+   
+	total_size = 0;
+	//head = p_data->sub;
+    //printf("%s\n", p_data->name);
+	while (head)
+	{
+        tmp_data = head->data;
+        printf("hmmm %s %ld %ld\n", tmp_data->name, tmp_data->stat->st_blocks, tmp_data->stat->st_size/1024);
+		total_size += tmp_data->stat->st_blocks;
+		head = head->next;
+	}
+	return (total_size);
+}
 
 int         print_long(t_info *info, t_data *f_data)
 {
