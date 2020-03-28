@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 22:58:02 by psprawka          #+#    #+#             */
-/*   Updated: 2020/03/11 20:44:08 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/03/28 18:37:10 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,8 @@ bool	if_process_file(t_info *info, char *filename)
 	if (info->flags & FLAG_a)
 		return (true);
 	
-	// printf("[%d][%d][%s]\n", ft_strcmp(filename, "."), ft_strcmp(filename, ".."), filename);
 	if (!ft_strcmp(filename, ".") || !ft_strcmp(filename, ".."))
-		return (false);
-	
+		return (false);	
 
 	if (!(info->flags & FLAG_A) && filename[0] == '.')
 		return (false);
@@ -66,10 +64,10 @@ t_data *alloc_data(char *arg_name, char *path_name)
 	t_data		*new_data;
 	
 	if (!(stat = (struct stat *)malloc(sizeof(struct stat))) ||
-		!(new_data = (t_data *)malloc(sizeof(t_data))))
+		!(new_data = (t_data *)malloc(sizeof(t_data))) ||
+		lstat(path_name, stat) == -1)
 		return (NULL);
 	
-	lstat(path_name, stat);
 	new_data->stat = stat;
 	new_data->name = ft_strdup(arg_name);
 	new_data->path = ft_strdup(path_name);
@@ -77,5 +75,3 @@ t_data *alloc_data(char *arg_name, char *path_name)
 	new_data->sub = NULL;
 	return (new_data);
 }
-
-

@@ -17,14 +17,18 @@ test_cases =    ['author author',
                 ' ',
                 '-a .',
                 '.',
+                '-i '
                 '-A .',
                 '-A',
+                '-i .', 
+                '-A Libft/ Makefile author .',
                 '-r author /home/psprawka/Desktop/ Libft/',
                 '-R .',
-	            #'-la Libft/ /Desktop',
-                #'-ltRat -ta -l Libft/',
+	            '-la Libft/ test',
+                '-ltat -ta Libft/ test',
+                '-ltat -ta Libft/',
+                '-ltRat -ta -l Libft',
 			    '-tr -R /opt',
-                #'-r Libft/ -y author /home/psprawka/Desktop/',
                 'Libft/ author Makefile ft_ls my_ls',
                 '-r Libft/ author Makefile ft_ls my_ls ',
                 '-rA Libft/ author Makefile ft_ls my_ls ',
@@ -33,16 +37,19 @@ test_cases =    ['author author',
                 '-t Libft/',
                 '-tr Libft/srcs/ author Makefile Libft/',
                 '-a Libft/',
-                '-at /home/psprawka/',
+                '-at -i /home/psprawka/',
                 '-R Libft/srcs .',
-                #'-lRtar Libft/',
-                #'-ilR Libft/',
+                '-lRtar Libft',
+                '-i -lR Libft',
                 '-A -a -A -AA -a Libft/srcs/',
-                #'-Rrtla /etc/dev/',
+                '-Rrta -l Libft',
+                '-lRrta Libft test Makefile',
                 '-A /home/psprawka/Dreem-Embedded-Nano . Makefile',
 			    '-t /home/',
                 '-at Libft/srcs/',
+                '-R -i -l Libft/srcs test Makefile Makefile',
                 '-l test Libft',
+                '-l -i -A test author Libft Makefile',
                 '-l Libft',
                 '..',
                 '-r .',
@@ -51,13 +58,17 @@ test_cases =    ['author author',
                 '-rA /home/psprawka/42',
                 '-R /home/psprawka/42 srcs/',
                 '-Rr /home/psprawka/42 srcs/',
-                #'-Rt /home/psprawka/Dreem-Embedded-Nano /data/',
+                '-Rt /home/psprawka/Dreem-Embedded-Nano /data',
                 '-Rrt /home/psprawka/Dreem-Embedded-Nano srcs/',
                 '-RrtA /home/psprawka/Dreem-Embedded-Nano srcs/',
                 '-t -t -t -t  Libft/',
                 '-l -r includes',
                 '-l includes',
                 '-l -R -r /data']
+
+                # Tests that are supposed to fail:
+                #'-r Libft/ -y author /home/psprawka/Desktop/',
+                #'-la Libft/ /invalid_dir/ no_file',
 
 if "-c" in sys.argv:
     os.system("make")
@@ -76,7 +87,7 @@ for test in test_cases:
     my_ls = os.popen('cat my_ls').read()
     their_ls = os.popen('cat their_ls').read()
 
-    if "-l" in test:
+    if "-l" in test or "-i" in test:
         my_lines = my_ls.split('\n')
         
         for i in range(len(my_lines)):

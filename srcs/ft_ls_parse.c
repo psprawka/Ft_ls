@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 00:11:13 by psprawka          #+#    #+#             */
-/*   Updated: 2020/03/22 16:40:21 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/03/28 18:36:35 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,14 @@ static int	create_recursive_list(t_info *info, t_dnode *node, t_data *curr_data)
 		
 	while ((file = readdir(directory)) != NULL)
 	{
-		// if (file->d_name[0] == '.' && !(info->flags & FLAG_a))
-		// 	continue;
 		if (if_process_file(info, file->d_name) == false)
 			continue;
 		new_data = alloc_data(file->d_name, path_builder(curr_data->path, file->d_name));
 		new_node = ft_init_double_list(new_data, sizeof(t_data));
 		ft_add_back_double_list(&(curr_data->sub), new_node);
+		
+		if (ft_strcmp(".", new_data->name) == 0 || ft_strcmp("..", new_data->name) == 0)
+			continue;
 		if ((info->flags & FLAG_R) && S_ISDIR(new_data->stat->st_mode))
 			create_recursive_list(info, new_node, new_data);	
 	}
@@ -74,7 +75,7 @@ static int	create_recursive_list(t_info *info, t_dnode *node, t_data *curr_data)
 	return (EXIT_SUCCESS);
 }
 
-static void	create_list_args(t_info *info, char *arg_name)
+static int	create_list_args(t_info *info, char *arg_name)
 {
 	t_dnode	*new_node;
 	t_data	*data;
@@ -82,10 +83,16 @@ static void	create_list_args(t_info *info, char *arg_name)
 	if (!(data = alloc_data(arg_name, arg_name)) ||
 		!(new_node = ft_init_double_list(data, sizeof(t_data))) ||
 		ft_add_back_double_list(&(info->args), new_node) == EXIT_FAILURE)
+	{
 		ft_error(1, arg_name, '\0');
+		return (EXIT_FAILURE);
+	}
+		
+	if (S_ISDIR(data->stat->st_mode) &&
+		create_recursive_list(info, new_node, data))
+		return (EXIT_FAILURE);
 	
-	if (S_ISDIR(data->stat->st_mode))
-		create_recursive_list(info, new_node, data);
+	return (EXIT_SUCCESS);
 }
 
 /*

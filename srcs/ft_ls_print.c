@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 22:57:40 by psprawka          #+#    #+#             */
-/*   Updated: 2020/03/22 18:18:02 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/03/28 18:36:54 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,19 @@ int		print_files(t_info *info)
 	t_data	*tmp_data;
 
 	tmp = info->flags & FLAG_r ? ft_get_last_double_list(info->args) : info->args;
-	//ft_print_double_list(info->args, NULL);
 	while (tmp)
 	{
 		tmp_data = tmp->data;
 		if (!S_ISDIR(tmp_data->stat->st_mode))
 		{
-			if (tmp_data->name[0] == '-')
-				ft_error(1, tmp_data->name, '\0');
-			else
-				FLAG_l & info->flags ? print_long(info, tmp_data) : printf("%s\n", tmp_data->name);
-			t_dnode *to_rm = tmp;
-			//tmp = info->flags & FLAG_r ? tmp->prev : tmp->next;
-			ft_remove_double_list(&(info->args), to_rm);
+			if (info->flags & FLAG_i)
+				printf("%d ", tmp_data->stat->st_ino);
+			FLAG_l & info->flags ? print_long(info, tmp_data) : printf("%s\n", tmp_data->name);
+			info->left_args_nb--;
+			ft_remove_double_list(&(info->args), tmp);
 		}
-		//else
 			tmp = info->flags & FLAG_r ? tmp->prev : tmp->next;
 	}
-	//ft_print_double_list(info->args, NULL);
 	return (EXIT_SUCCESS);
 }
 
@@ -65,26 +60,23 @@ int		print_directories(t_info *info, t_dnode *head, char *path)
 	t_dnode	*tmp;
 	t_data	*tmp_data;
 
-	tmp = info->flags & FLAG_r ? ft_get_last_double_list(head) : head;
 	info->left_args_nb--;
-	//if (info->args_nb > 1 || FLAG_R & info->flags) //|| head != info->args)// <- play with this check
-		//printf("\n%s:\n", path);
+	tmp = info->flags & FLAG_r ? ft_get_last_double_list(head) : head;
 	if (info->flags & FLAG_l)
 		printf("total %d\n", calculate_total_size(tmp));
 	while (tmp)
 	{
 		tmp_data = tmp->data;
+		if (info->flags & FLAG_i)
+			printf("%d ", tmp_data->stat->st_ino);
 		FLAG_l & info->flags ? print_long(info, tmp_data) : printf("%s\n", tmp_data->name);
 		tmp = info->flags & FLAG_r ? tmp->prev : tmp->next;
 	}
-	if (info->flags & FLAG_l && !(info->flags & FLAG_R) && info->left_args_nb)
-		printf("\n");
-	
 	tmp = info->flags & FLAG_r ? ft_get_last_double_list(head) : head;
 	while (info->flags & FLAG_R && tmp)
 	{
 		tmp_data = tmp->data;
-		if (S_ISDIR(tmp_data->stat->st_mode))
+		if (S_ISDIR(tmp_data->stat->st_mode) && !((ft_strcmp(".", tmp_data->name) == 0 || ft_strcmp("..", tmp_data->name) == 0)))
 		{
 			printf("\n%s:\n", tmp_data->path);
 			print_directories(info, tmp_data->sub, tmp_data->path);
@@ -93,44 +85,3 @@ int		print_directories(t_info *info, t_dnode *head, char *path)
 	}
 	return (EXIT_SUCCESS);
 }
-
-/*
-** ========================== ALL TO FIX LATER ============================
-*/
-
-// void	print_path_r(t_list *all, int flags, char *path)
-// {
-// 	t_list	*ptr;
-// 	int 	spaces;
-	
-// 	ptr = all;
-// 	if (path == NULL || !ptr || (ptr && ft_strcmp(ptr->path, path)))
-// 		!ptr ? ft_printf("%s:\n", path) : ft_printf("%s:\n", ptr->path);
-// 	if (flags & FLAG_l && ptr)
-// 		ft_printf("total %d\n", get_total(ptr, 0, &spaces));
-// 	while (ptr && ptr->next)
-// 		ptr = ptr->next;
-// 	while (ptr && ptr->prev != NULL)
-// 	{
-// 		flags & FLAG_i ? ft_printf("%d ", ptr->info->st_ino) : spaces;
-// 		!(flags & FLAG_l) ? ft_printf("%s\n", ptr->name) : print_long(ptr, spaces);
-// 		ptr = ptr->prev;
-// 	}
-// 	if (ptr)
-// 	{
-// 		flags & FLAG_i ? ft_printf("%d ", ptr->info->st_ino) : spaces;
-// 		!(flags & FLAG_l) ? ft_printf("%s\n", ptr->name) : print_long(ptr, spaces);
-// 	}
-// 	ptr = all;
-// 	while (ptr && ptr->next)
-// 		ptr = ptr->next;
-// 	while (flags & FLAG_R && ptr != NULL)
-// 	{
-
-// 		if (S_ISDIR(ptr->info->st_mode) && ft_strncmp(ptr->name, ".", 1) && ft_printf("\n"))
-// 			ptr->sub ? print_path_r(ptr->sub, flags, path) :
-// 			print_path_r(ptr->sub, flags, bulid_path(ptr->path, ptr->name));
-// 		ptr = ptr->prev;
-// 	}
-// }
-

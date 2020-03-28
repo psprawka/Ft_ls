@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/29 13:38:22 by psprawka          #+#    #+#             */
-/*   Updated: 2020/03/22 18:25:46 by psprawka         ###   ########.fr       */
+/*   Updated: 2020/03/28 18:24:19 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,12 @@ int			main(int ac, char **av)
 	while (tmp)
 	{
 		tmp_data = tmp->data;
-		if ((info.args_nb > 1 || FLAG_R & info.flags) && !(info.args_nb == info.left_args_nb && FLAG_R & info.flags))
+		if ((info.args_nb > 1 || FLAG_R & info.flags) && !(info.args_nb == info.left_args_nb && FLAG_R & info.flags) && info.args_nb != info.left_args_nb)
 			printf("\n");
 		if (info.args_nb > 1 || FLAG_R & info.flags )
 			printf("%s:\n", tmp_data->path);
-			
 		print_directories(&info, tmp_data->sub, tmp_data->path);
 		tmp = info.flags & FLAG_r ? tmp->prev : tmp->next;
 	}
 	return (0);
 }
-
-
